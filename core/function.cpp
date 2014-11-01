@@ -33,9 +33,11 @@ function::~function()
 function::function(float min, float max, float start, float end, section* _parent, enum eFunctype newtype)
     : activeSubfunction(-1), type(newtype), secParent(_parent), startValue(start)
 {
-    funcList.append(new subfunction(min, max, start, end-start, this));
+    funcList.append(new subfunction(min, max, start, end - start, this));
 }
 
+// Finds the subfunction that contains x by using the maxArgument of each
+// subfunction; then, calls getValue on that subfunction
 float function::getValue(float x)
 {
     int i = 0;
@@ -58,24 +60,49 @@ void function::appendSubFunction(float length, int i)
 {
     const int index = funcList.size();
     subfunction *temp, *prev;
+
     if(i == -1) {
+        // Prepend the subfunction
+
         if(index == 0) {
+            // Subfunction list is empty; length param is not used?
             temp = new subfunction(0.f, 1.f, startValue, 0.f, this);
         } else {
             prev = this->funcList.at(0);
+
+            // min: zero
+            // max: length
+            // startValue: prev startValue (same as function startValue because
+            // this is the first subfunction?)
+            // prev min, max, and start value will be updated below
             temp = new subfunction(0.f, length, prev->startValue, 0.f, this);
         }
+
         this->funcList.prepend(temp);
-        activeSubfunction = index;
+        activeSubfunction = index; // activeSubFunction is never used
     } else {
+        // Add after specified index
         subfunction* pred = funcList[i];
+
+        // min: preceding max
+        // max: preceding max + length
+        // startValue: end value of preceding subfunction (if symmetric
+        // subfunction, same as startValue of subfunction; else startValue of
+        // subfunction + symArg)
         this->funcList.insert(i+1, new subfunction(pred->maxArgument, pred->maxArgument+length, pred->endValue(), 0.f, this));
-        activeSubfunction = i+1;
+        activeSubfunction = i+1; // activeSubFunction is never used
     }
+
+    // Update all subfunction min, max, and symArg values except for the first
+    // item.
     const int s = funcList.size();
     for(i = 1; i < s; ++i) {
         subfunction* prev = funcList[i-1];
         subfunction* cur = funcList[i];
+
+        // min: preceding max
+        // max: preceding max + (current max - min)
+        // diff: current diff
         cur->update(prev->maxArgument, prev->maxArgument + cur->maxArgument - cur->minArgument, cur->symArg);
     }
 }
@@ -118,14 +145,20 @@ void function::translateValues(subfunction* caller)
 {
     int i = 0;
     subfunction* prev, *cur;
+
+    // Do nothing on subfunctions up to and including the caller
     while(i < funcList.size()) {
         cur = funcList[i++];
         if(cur == caller) break;
     }
 
+    // Update the startValue of subsequent subfunctions
     for(;i < funcList.size(); ++i) {
         prev = cur;
         cur = funcList[i];
+
+        // end value of preceding subfunction (if symmetric subfunction, same as
+        // startValue of subfunction; else startValue of subfunction + symArg)
         cur->translateValues(prev->endValue());
     }
 }

@@ -268,20 +268,23 @@ float subfunction::getValue(float x)
     return -1;
 }
 
-float subfunction::getMinValue() // relic, doesn't get used at all at this time
-{
-    return startValue < endValue() ? startValue : endValue();
-}
+// relic, doesn't get used at all at this time
+//float subfunction::getMinValue()
+//{
+//    return startValue < endValue() ? startValue : endValue();
+//}
 
-float subfunction::getMaxValue()
-{
-    return startValue > endValue() ? startValue : endValue();
-
-}
+// relic, doesn't get used at all at this time
+//float subfunction::getMaxValue()
+//{
+//    return startValue > endValue() ? startValue : endValue();
+//}
 
 void subfunction::translateValues(float newStart)
 {
     startValue = newStart;
+
+
     if(degree == tozero) {
         symArg = -startValue;
     }

@@ -71,11 +71,13 @@ public:
 
     QList<subfunction*> funcList;
 
+    // Initialized to -1 in constructor
+    // Set only in appendSubfunction but never read
     int activeSubfunction;
-    const enum eFunctype type;
-    section* const secParent;
+    const enum eFunctype type; // Set by constructor
+    section* const secParent; // Set by constructor
 private:
-    float startValue;
+    float startValue; // Initialized by constructor
 };
 
 #endif // FUNCTION_H

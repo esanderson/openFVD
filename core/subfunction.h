@@ -55,8 +55,9 @@ public:
     void changeDegree(eDegree newDegree);
     void updateBez();
 
-    float getMinValue();
-    float getMaxValue();
+    // relic, doesn't get used at all at this time
+    //float getMinValue();
+    //float getMaxValue();
 
     void translateValues(float newStart);
 
