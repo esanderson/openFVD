@@ -166,3 +166,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#######################
+# Building the source #
+#######################
+
+1. Download and install qt-opensource-windows-x86-msvc2012_64_opengl-5.2.1.exe
+1. Configure the project with "Desktop Qt 5.2.1 MSVC2012 OpenGL 64bit"
