@@ -22,7 +22,6 @@
 
 #include "track.h"
 
-
 #define RELTHRESH 1.0f
 
 using namespace std;

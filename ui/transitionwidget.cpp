@@ -316,8 +316,6 @@ void transitionWidget::on_transitionBox_currentIndexChanged(int index)
     selectedFunc->changeDegree((eDegree)index);
     selectedFunc->parent->translateValues(selectedFunc);
 
-
-
     inTrack->trackData->updateTrack(inTrack->trackData->activeSection, (int)(selectedFunc->minArgument*F_HZ-1.5f));
     mParent->redrawGraphs();
     gloParent->updateInfoPanel();
@@ -337,7 +335,9 @@ void transitionWidget::on_transitionBox_currentIndexChanged(int index)
 void transitionWidget::on_changeSpin_valueChanged(double arg1)
 {
     if(phantomChanges) return;
-    if(selectedFunc->parent->secParent->bArgument == DISTANCE && selectedFunc->parent->type != funcLateral && selectedFunc->parent->type != funcNormal) {
+    if(   selectedFunc->parent->secParent->bArgument == DISTANCE
+       && selectedFunc->parent->type != funcLateral
+       && selectedFunc->parent->type != funcNormal) {
         selectedFunc->symArg = arg1*gloParent->mOptions->getLengthFactor();
     } else {
         selectedFunc->symArg = arg1;

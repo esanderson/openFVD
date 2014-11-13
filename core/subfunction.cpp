@@ -284,7 +284,6 @@ void subfunction::translateValues(float newStart)
 {
     startValue = newStart;
 
-
     if(degree == tozero) {
         symArg = -startValue;
     }
