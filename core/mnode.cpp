@@ -19,7 +19,6 @@
 #include "mnode.h"
 #include "exportfuncs.h"
 #include <cmath>
-#include "lenassert.h"
 
 using namespace std;
 

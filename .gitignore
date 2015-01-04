@@ -26,4 +26,8 @@
 *.exe
 *.out
 *.app
+
 fvd.pro.user
+glm-0.9.5.1.zip
+glm/*
+doc/*

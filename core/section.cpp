@@ -141,7 +141,7 @@ int section::exportSection(fstream *file, mnode* anchor, float mPerNode, float f
 
             char cTemp;
 
-            cTemp = 0xFF;
+            cTemp = (char)0xFF;
             writeBytes(file, &cTemp, 1); // CONT ROLL
             cTemp = fabs(V.y) < fRollThresh ? 0x00 : 0xff;
             writeBytes(file, &cTemp, 1); // REL ROLL

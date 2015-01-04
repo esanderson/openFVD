@@ -22,7 +22,7 @@
 #include <QList>
 #include <sstream>
 #include <fstream>
-#include "lenassert.h"
+#include "../lenassert.h"
 
 #define F_HZ (1000.f)
 

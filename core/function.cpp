@@ -20,7 +20,7 @@
 #include "section.h"
 
 #include "exportfuncs.h"
-#include "lenassert.h"
+#include "../lenassert.h"
 
 function::~function()
 {

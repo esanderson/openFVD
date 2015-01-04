@@ -202,7 +202,7 @@ void writeToExportFile(std::fstream *file, QList<bezier_t*> &bezList)
 
         writeBytes(file, (const char*)&bezList[i]->roll, 4);
 
-        char cTemp = 0xFF;
+        char cTemp = (char)0xFF;
         writeBytes(file, &cTemp, 1); // CONT ROLL
         cTemp = bezList[i]->relRoll ? 0xFF : 0x00;
         writeBytes(file, &cTemp, 1); // REL ROLL

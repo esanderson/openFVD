@@ -115,7 +115,6 @@ v0.1 Alpha:
 - OpenGL shaders visualising important data (like forces, roll speed and track flexion).
 - PoV mode enabling the ability to check the track inside FVD++
 
-
 ###################
 # Having Trouble? #
 ###################
@@ -123,11 +122,9 @@ v0.1 Alpha:
 #### I can't use visualizations ####
 - The visualizations use OpenGL 3.1 shader technology, make sure your graphics card / drivers support OpenGL 3.1
 
-
 #### I don't know how to do XY ####
 - read through the official documentation, this document should explain nearly every feature of FVD++
 - Visit the FVD++ Thread on NoLimitsExchange (http://forum.nolimits-exchange.com/)
-
 
 #######################
 # Found a Bug / Crash #
@@ -137,7 +134,6 @@ Please let me know if you found a bug / crash either by posting in the NLE forum
 Please include as much information as possible, try to save the track that bugged out and send me the saved .fvd file.
 If the program crashed try to recreate the crash scenario and describe how you got the program to crash in a detailed way.
 
-
 #############
 # Thanks to #
 #############
@@ -145,7 +141,6 @@ If the program crashed try to recreate the crash scenario and describe how you g
 - Lucas van den Bosch for creating the official documentation and youtube tutorial channel
 - Ercan "geforcefan" Akyürek for deploying and testing the tool on Mac systems
  
-
 #######################
 # License information #
 #######################
@@ -170,5 +165,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 # Building the source #
 #######################
 
-1. Download and install qt-opensource-windows-x86-msvc2012_64_opengl-5.2.1.exe
+1. Download and install [qt-opensource-windows-x86-msvc2012_64_opengl-5.2.1.exe](http://download.qt-project.org/official_releases/qt/5.2/5.2.1/)
+1. Install Visual Studio 2012 (express is fine: [Visual Studio 2012 Express](http://www.microsoft.com/en-us/download/details.aspx?id=34673) (download the iso version))
+1. Install [GLEW](http://glew.sourceforge.net/index.html)
+  1. Download the [Windows 32-bit and 64-bit binaries zip file](http://sourceforge.net/projects/glew/files/glew/1.11.0/glew-1.11.0-win32.zip/download)
+  1. Unzip the download
+  1. Copy bin\Release\Win32\glew32.dll to %SystemRoot%/system32 (C:\Windows\system32)
+  1. Copy bin\Release\x64\glew32.dll to C:\Windows\SysWOW64
+  1. Copy lib\Release\Win32\glew32.lib to C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\lib
+  1. Copy lib\Release\x64\glew32.lib to C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\lib\amd64
+  1. Copy include\GL\glew.h and include\GL\wglew.h to C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\GL
+1. Install [GLM](http://glm.g-truc.net/0.9.5/index.html)
+  1. Download [glm-0.9.5.1](http://sourceforge.net/projects/ogl-math/files/glm-0.9.5.1/) to application directory
+  1. Copy the folder glm\glm out of the zip and into to the application directory
 1. Configure the project with "Desktop Qt 5.2.1 MSVC2012 OpenGL 64bit"
