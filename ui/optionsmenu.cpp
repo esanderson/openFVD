@@ -40,8 +40,6 @@ optionsMenu::optionsMenu(QWidget *parent) :
     this->setFixedSize(700, 700);
     this->setMinimumSize(700, 700);
     this->setMaximumSize(700, 700);
-
-    qDebug() << "Rest";
 #endif
 
     optionsFile = common::getResource("options.cfg", true);
@@ -85,9 +83,8 @@ optionsMenu::optionsMenu(QWidget *parent) :
     ui->setupUi(this);
 
     #ifdef Q_OS_MAC
-    int temp = glPolicy;
-    ui->glBox->removeItem(0);
-    glPolicy = temp;
+    ui->distanceLabel_2->setVisible(false);
+    ui->glBox->setVisible(false);
     #endif
 
     ui->gridBox->setChecked(drawGrid);
