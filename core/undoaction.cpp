@@ -46,8 +46,8 @@ undoAction::undoAction(trackHandler* _track, eActionType _type)
                 && type != changeCurveRadius && type != changeSpeedState && type != changeSegmentSpeed && type != appendSegment
                 && type != removeSegment && type != changeSegmentArgument && type != changeSegmentOrientation)
         {
-            inFunction = hTrack->graphWidgetItem->selFunc->parent->type;
-            subfunctionNumber = hTrack->graphWidgetItem->selFunc->parent->getSubfunctionNumber(hTrack->graphWidgetItem->selFunc);
+            inFunction = hTrack->graphWidgetItem->selFunc->parent()->type;
+            subfunctionNumber = hTrack->graphWidgetItem->selFunc->parent()->getSubfunctionNumber(hTrack->graphWidgetItem->selFunc);
         }
     }
     nextAction = NULL;
@@ -183,39 +183,39 @@ void undoAction::doUndo()
     switch (type)
     {
     case onLengthSpin:
-        hTrack->graphWidgetItem->selFunc->parent->changeLength(fromValue.toDouble(), subfunctionNumber);
+        hTrack->graphWidgetItem->selFunc->parent()->changeLength(fromValue.toDouble(), subfunctionNumber);
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onChangeSpin:
-        hTrack->graphWidgetItem->selFunc->symArg = fromValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setSymArg(fromValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onArg1:
-        hTrack->graphWidgetItem->selFunc->arg1 = fromValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setArg1(fromValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onCenterSpin:
-        hTrack->graphWidgetItem->selFunc->centerArg = fromValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setCenterArg(fromValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onTensionSpin:
-        hTrack->graphWidgetItem->selFunc->tensionArg = fromValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setTensionArg(fromValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onTransitionBox:
-        hTrack->graphWidgetItem->selFunc->degree = (eDegree)fromValue.toInt();
+        hTrack->graphWidgetItem->selFunc->setDegree((eDegree)fromValue.toInt());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case appendSubFunction:
@@ -243,7 +243,7 @@ void undoAction::doUndo()
             //parent->selectGraph(subfunctionNumber, inFunction);
         }
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case changeSegmentLength:
@@ -436,14 +436,14 @@ void undoAction::doUndo()
     case changeFunctionStatus:
         if(fromValue.toInt())
         {
-            hTrack->graphWidgetItem->selFunc->parent->lock(subfunctionNumber);
+            hTrack->graphWidgetItem->selFunc->parent()->lock(subfunctionNumber);
         }
         else
         {
-            hTrack->graphWidgetItem->selFunc->parent->unlock(subfunctionNumber);
+            hTrack->graphWidgetItem->selFunc->parent()->unlock(subfunctionNumber);
         }
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f)); // SIGSEGV because selFunc was NULL
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack)); // SIGSEGV because selFunc was NULL
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     default:
@@ -456,6 +456,11 @@ void undoAction::doUndo()
     {
         nextAction->doUndo();
     }
+}
+
+int undoAction::getNodeIndex(trackHandler* hTrack)
+{
+    return hTrack->graphWidgetItem->selFunc->getNodeIndex();
 }
 
 void undoAction::doRedo()
@@ -561,39 +566,39 @@ void undoAction::doRedo()
     switch (type)
     {
     case onLengthSpin:
-        hTrack->graphWidgetItem->selFunc->parent->changeLength(toValue.toDouble(), subfunctionNumber);
+        hTrack->graphWidgetItem->selFunc->parent()->changeLength(toValue.toDouble(), subfunctionNumber);
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onChangeSpin:
-        hTrack->graphWidgetItem->selFunc->symArg = toValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setSymArg(toValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onArg1:
-        hTrack->graphWidgetItem->selFunc->arg1 = toValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setArg1(toValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onCenterSpin:
-        hTrack->graphWidgetItem->selFunc->centerArg = toValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setCenterArg(toValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onTensionSpin:
-        hTrack->graphWidgetItem->selFunc->tensionArg = toValue.toDouble();
+        hTrack->graphWidgetItem->selFunc->setTensionArg(toValue.toDouble());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case onTransitionBox:
-        hTrack->graphWidgetItem->selFunc->degree = (eDegree)toValue.toInt();
+        hTrack->graphWidgetItem->selFunc->setDegree((eDegree)toValue.toInt());
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     case appendSubFunction:
@@ -785,14 +790,14 @@ void undoAction::doRedo()
     case changeFunctionStatus:
         if(toValue.toInt())
         {
-            hTrack->graphWidgetItem->selFunc->parent->lock(subfunctionNumber);
+            hTrack->graphWidgetItem->selFunc->parent()->lock(subfunctionNumber);
         }
         else
         {
-            hTrack->graphWidgetItem->selFunc->parent->unlock(subfunctionNumber);
+            hTrack->graphWidgetItem->selFunc->parent()->unlock(subfunctionNumber);
         }
         hTrack->graphWidgetItem->selectionChanged();
-        inTrack->updateTrack(sectionNumber, (int)(hTrack->graphWidgetItem->selFunc->minArgument*F_HZ-1.5f));
+        inTrack->updateTrack(sectionNumber, getNodeIndex(hTrack));
         hTrack->graphWidgetItem->redrawGraphs();
         break;
     default:

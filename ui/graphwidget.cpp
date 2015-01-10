@@ -505,7 +505,7 @@ void graphWidget::on_plotter_customContextMenuRequested(const QPoint &pos)
 
     menu->addAction("Append Transition", ui->transitionEditor, SLOT(on_appendButton_released()));
     menu->addAction("Prepend Transition", ui->transitionEditor, SLOT(on_prependButton_released()));
-    if(selFunc->parent->funcList.size() > 1) {
+    if(selFunc->parent()->funcList.size() > 1) {
         menu->addAction("Remove Transition", ui->transitionEditor, SLOT(on_removeButton_released()));
     }
 
@@ -518,57 +518,57 @@ void graphWidget::keyPressEvent(QKeyEvent* event) {
     bool ok = false;
     switch(event->key()) {
     case Qt::Key_Delete:
-        if(selFunc && selFunc->parent->funcList.size() > 1) {
+        if(selFunc && selFunc->parent()->funcList.size() > 1) {
             ui->transitionEditor->on_removeButton_released();
         }
         break;
     case Qt::Key_Right:
         if(selFunc) {
-            if((i = selFunc->parent->getSubfunctionNumber(selFunc)) == selFunc->parent->funcList.size()-1) {
+            if((i = selFunc->parent()->getSubfunctionNumber(selFunc)) == selFunc->parent()->funcList.size()-1) {
                 ui->transitionEditor->on_appendButton_released();
             } else {
-                changeSelection(selFunc->parent->funcList[i+1]);
+                changeSelection(selFunc->parent()->funcList[i+1]);
                 redrawGraphs();
             }
         }
         break;
     case Qt::Key_Left:
         if(selFunc) {
-            if((i = selFunc->parent->getSubfunctionNumber(selFunc)) == 0) {
+            if((i = selFunc->parent()->getSubfunctionNumber(selFunc)) == 0) {
                 ui->transitionEditor->on_prependButton_released();
             } else {
-                changeSelection(selFunc->parent->funcList[i-1]);
+                changeSelection(selFunc->parent()->funcList[i-1]);
                 redrawGraphs();
             }
         }
         break;
     case Qt::Key_Up:
         if(selFunc) {
-            if(selFunc->parent->secParent->type == forced) {
-                i = selFunc->parent->getSubfunctionNumber(selFunc);
-                if(selFunc->parent->type == funcRoll) {
-                    ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                } else if(selFunc->parent->type == funcNormal) {
-                    ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
+            if(selFunc->parent()->secParent->type == forced) {
+                i = selFunc->parent()->getSubfunctionNumber(selFunc);
+                if(selFunc->parent()->type == funcRoll) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                } else if(selFunc->parent()->type == funcNormal) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
                 } else {
-                    ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
+                    ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
                 }
                 if(!ok) changeSelection(oldFunc);
                 redrawGraphs();
-            } else if(selFunc->parent->secParent->type == geometric) {
-                i = selFunc->parent->getSubfunctionNumber(selFunc);
-                if(selFunc->parent->type == funcRoll) {
-                    ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                } else if(selFunc->parent->type == funcPitch) {
-                    ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
+            } else if(selFunc->parent()->secParent->type == geometric) {
+                i = selFunc->parent()->getSubfunctionNumber(selFunc);
+                if(selFunc->parent()->type == funcRoll) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                } else if(selFunc->parent()->type == funcPitch) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
                 } else {
-                    ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
+                    ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
                 }
                 if(!ok) changeSelection(oldFunc);
                 redrawGraphs();
@@ -578,31 +578,31 @@ void graphWidget::keyPressEvent(QKeyEvent* event) {
     case Qt::Key_Down:
         if(selFunc)
         {
-            if(selFunc->parent->secParent->type == forced) {
-                i = selFunc->parent->getSubfunctionNumber(selFunc);
-                if(selFunc->parent->type == funcRoll) {
-                    ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                } else if(selFunc->parent->type == funcNormal) {
-                    ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
+            if(selFunc->parent()->secParent->type == forced) {
+                i = selFunc->parent()->getSubfunctionNumber(selFunc);
+                if(selFunc->parent()->type == funcRoll) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                } else if(selFunc->parent()->type == funcNormal) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
                 } else {
-                    ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
+                    ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
                 }
                 if(!ok) changeSelection(oldFunc);
                 redrawGraphs();
-            } else if(selFunc->parent->secParent->type == geometric) {
-                i = selFunc->parent->getSubfunctionNumber(selFunc);
-                if(selFunc->parent->type == funcRoll) {
-                    ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                } else if(selFunc->parent->type == funcPitch) {
-                    ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->latForce->funcList.size() ? selFunc->parent->secParent->latForce->funcList[i] : selFunc->parent->secParent->latForce->funcList.last());
+            } else if(selFunc->parent()->secParent->type == geometric) {
+                i = selFunc->parent()->getSubfunctionNumber(selFunc);
+                if(selFunc->parent()->type == funcRoll) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                } else if(selFunc->parent()->type == funcPitch) {
+                    ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->latForce->funcList.size() ? selFunc->parent()->secParent->latForce->funcList[i] : selFunc->parent()->secParent->latForce->funcList.last());
                 } else {
-                    ok = changeSelection(i < selFunc->parent->secParent->normForce->funcList.size() ? selFunc->parent->secParent->normForce->funcList[i] : selFunc->parent->secParent->normForce->funcList.last());
-                    if(!ok) ok = changeSelection(i < selFunc->parent->secParent->rollFunc->funcList.size() ? selFunc->parent->secParent->rollFunc->funcList[i] : selFunc->parent->secParent->rollFunc->funcList.last());
+                    ok = changeSelection(i < selFunc->parent()->secParent->normForce->funcList.size() ? selFunc->parent()->secParent->normForce->funcList[i] : selFunc->parent()->secParent->normForce->funcList.last());
+                    if(!ok) ok = changeSelection(i < selFunc->parent()->secParent->rollFunc->funcList.size() ? selFunc->parent()->secParent->rollFunc->funcList[i] : selFunc->parent()->secParent->rollFunc->funcList.last());
                 }
                 if(!ok) changeSelection(oldFunc);
                 redrawGraphs();
@@ -618,7 +618,7 @@ void graphWidget::keyPressEvent(QKeyEvent* event) {
 
 void graphWidget::setBezPoints()
 {
-    if(!selFunc || selFunc->degree != freeform) {
+    if(!selFunc || selFunc->degree() != freeform) {
         if(bezPoints.size()) {
             for(int i = 0; i < bezPoints.size(); ++i) {
                 delete bezPoints[i];
@@ -627,9 +627,9 @@ void graphWidget::setBezPoints()
         }
         return;
     }
-    if(selFunc && selFunc->degree == freeform) {
+    if(selFunc && selFunc->degree() == freeform) {
         QCPAxis* yAxis;
-        switch(selFunc->parent->type) {
+        switch(selFunc->parent()->type) {
         case funcRoll:
             yAxis = yAxes[0];
             break;
@@ -646,15 +646,15 @@ void graphWidget::setBezPoints()
         }
 
         float until;
-        if(selFunc->parent->secParent->bArgument == TIME) {
-            until = selTrack->trackData->getNumPoints(selFunc->parent->secParent)/F_HZ;
+        if(selFunc->parent()->secParent->bArgument == TIME) {
+            until = selTrack->trackData->getNumPoints(selFunc->parent()->secParent)/F_HZ;
         } else {
-            until = selFunc->parent->secParent->lNodes.first()->fTotalHeartLength;
+            until = selFunc->parent()->secParent->lNodes.first()->fTotalHeartLength;
         }
-        int x1 = ui->plotter->xAxis->coordToPixel(selFunc->minArgument+until);
-        int x2 = ui->plotter->xAxis->coordToPixel(selFunc->maxArgument+until);
-        int y1 = yAxis->coordToPixel(selFunc->startValue);
-        int y2 = yAxis->coordToPixel(selFunc->startValue+selFunc->symArg);
+        int x1 = ui->plotter->xAxis->coordToPixel(selFunc->xStart() + until);
+        int x2 = ui->plotter->xAxis->coordToPixel(selFunc->xEnd()   + until);
+        int y1 = yAxis->coordToPixel(selFunc->yStart());
+        int y2 = yAxis->coordToPixel(selFunc->yStart() + selFunc->symArg());
         if(selFunc->pointList.size() != bezPoints.size()) {
             for(int i = 0; i < bezPoints.size(); ++i) {
                 delete bezPoints[i];
@@ -670,10 +670,10 @@ void graphWidget::setBezPoints()
         }
         for(int i = 0; i < selFunc->pointList.size(); ++i) {
             if(bezPoints[i]->isDragged) {
-                selFunc->pointList[i].x = (ui->plotter->xAxis->pixelToCoord(bezPoints[i]->pos().x()+6)-selFunc->minArgument-until)/(selFunc->maxArgument-selFunc->minArgument);
-                selFunc->pointList[i].y = (yAxis->pixelToCoord(bezPoints[i]->pos().y()+6)-selFunc->startValue)/(selFunc->symArg);
+                selFunc->pointList[i].x = (ui->plotter->xAxis->pixelToCoord(bezPoints[i]->pos().x() + 6) - selFunc->xStart() - until) / (selFunc->xEnd() - selFunc->xStart());
+                selFunc->pointList[i].y = (yAxis->pixelToCoord(bezPoints[i]->pos().y() + 6) - selFunc->yStart()) / selFunc->symArg();
                 selFunc->updateBez();
-                selTrack->trackData->updateTrack(selTrack->trackData->activeSection, (int)(selFunc->minArgument*F_HZ-1.5f));
+                selTrack->trackData->updateTrack(selTrack->trackData->activeSection, selFunc->getNodeIndex());
             } else {
                 int x = x1*(1-selFunc->pointList[i].x) + x2*selFunc->pointList[i].x-6;
                 int y = y1*(1-selFunc->pointList[i].y) + y2*selFunc->pointList[i].y-6;

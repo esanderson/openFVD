@@ -46,7 +46,7 @@ public:
     float getValue(float x);
 
     void setMaxArgument(float newMax);
-    float getMaxArgument() const { return funcList[funcList.size()-1]->maxArgument; }
+    float getMaxArgument() const { return funcList[funcList.size() - 1]->xEnd(); }
 
     float getMaxValue();
     float getMinValue();
@@ -63,8 +63,8 @@ public:
     void saveFunction(std::stringstream& file);
     void loadFunction(std::stringstream& file);
 
-    bool unlock(int _id);
-    bool lock(int _id);
+    void unlock(int _id);
+    void lock(int _id);
 
     int lockedFunc();
     subfunction* getSubfunction(float x);

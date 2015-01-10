@@ -207,7 +207,7 @@ bool secstraight::isInFunction(int index, subfunction* func)
     if(func == NULL) return false;
     if(index >= lNodes.size()) return false;
     float dist = lNodes[index]->fTotalHeartLength - lNodes[0]->fTotalHeartLength;
-    if(dist >= func->minArgument && dist <= func->maxArgument) {
+    if(dist >= func->xStart() && dist <= func->xEnd()) {
         return true;
     }
     return false;

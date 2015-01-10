@@ -297,7 +297,7 @@ void graphHandler::fillActiveGraphList(QCPAxis *xAxis, bool _argument, bool _dra
 
         subfunction* curFunc = func->funcList[i];
 
-        if(curFunc->locked) curFunc->getValue(-1.f); // make sure maxArg is right
+        if(curFunc->isLocked()) curFunc->getValue(-1.f); // make sure maxArg is right
 
         curGraph = new QCPGraph(xAxis, usedAxis);
 
@@ -309,11 +309,12 @@ void graphHandler::fillActiveGraphList(QCPAxis *xAxis, bool _argument, bool _dra
         curGraph->setSelectedBrush(QBrush(color[3]));
 
         double key;
-        if(curTrack->activeSection->type == straight || curTrack->activeSection->type == curved || curFunc->degree == tozero) {
+        if(curTrack->activeSection->type == straight || curTrack->activeSection->type == curved || curFunc->degree() == tozero) {
             int l = upper, r = curTrack->activeSection->lNodes.size()-1;
-            if(curFunc->degree == tozero) {
-                upper = curFunc->minArgument*F_HZ;
-                r = curFunc->maxArgument*F_HZ;
+
+            if(curFunc->degree() == tozero) {
+                upper = curFunc->xStart() * F_HZ;
+                r = curFunc->xEnd() * F_HZ;
                 if(r > curTrack->getNumPoints()) {
                     r = curTrack->getNumPoints();
                 }
@@ -375,18 +376,19 @@ void graphHandler::fillActiveGraphList(QCPAxis *xAxis, bool _argument, bool _dra
             for(int j = 0; j < 251; ++j) {
                 double maxArg;
                 if(curTrack->activeSection == curTrack->lSections.last() || !_drawExterns) {
-                    maxArg = curFunc->maxArgument;
+                    maxArg = curFunc->xEnd();
                 } else {
-                    maxArg= curTrack->activeSection->getMaxArgument() < curFunc->maxArgument ? curTrack->activeSection->getMaxArgument() : curFunc->maxArgument;
+                    maxArg = curTrack->activeSection->getMaxArgument() < curFunc->xEnd() ?
+                             curTrack->activeSection->getMaxArgument() : curFunc->xEnd();
                 }
-                if(maxArg < curFunc->minArgument) {
+                if(maxArg < curFunc->xStart()) {
                     curGraph->setProperty("p", qVariantFromValue((void*)curFunc));
                     curGraph->setData(x, y);
                     curGraph->setSelectable(true);
                     return;
                 }
                 //double maxArg = curFunc->maxArgument;
-                key = maxArg*j/250 + curFunc->minArgument*(250-j)/250;
+                key = maxArg * j / 250 + curFunc->xStart() * (250 - j)/ 250;
                 x.append(key+n);
                 y.append(curFunc->getValue(key));
             }
@@ -398,7 +400,7 @@ void graphHandler::fillActiveGraphList(QCPAxis *xAxis, bool _argument, bool _dra
         }
 
         if(x.isEmpty()) {
-            x.append(curFunc->maxArgument);
+            x.append(curFunc->xEnd());
             y.append(0.);
         }
         curGraph->setProperty("p", qVariantFromValue((void*)curFunc));

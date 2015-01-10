@@ -48,7 +48,7 @@ float function::getValue(float x)
     subfunction* cur = NULL;
     for(; i < s; ++i) {
         cur = funcList[i];
-        if(cur->maxArgument >= x) {
+        if(cur->xEnd() >= x) {
             break;
         }
     }
@@ -75,7 +75,7 @@ void function::appendSubFunction(float length, int i)
             // startValue: prev startValue (same as function startValue because
             // this is the first subfunction?)
             // prev min, max, and start value will be updated below
-            temp = new subfunction(0.f, length, prev->startValue, 0.f, this);
+            temp = new subfunction(0.f, length, prev->yStart(), 0.f, this);
         }
 
         this->funcList.prepend(temp);
@@ -89,7 +89,7 @@ void function::appendSubFunction(float length, int i)
         // startValue: end value of preceding subfunction (if symmetric
         // subfunction, same as startValue of subfunction; else startValue of
         // subfunction + symArg)
-        this->funcList.insert(i+1, new subfunction(pred->maxArgument, pred->maxArgument+length, pred->endValue(), 0.f, this));
+        this->funcList.insert(i+1, new subfunction(pred->xEnd(), pred->xEnd() + length, pred->endValue(), 0.f, this));
         activeSubfunction = i+1; // activeSubFunction is never used
     }
 
@@ -103,7 +103,7 @@ void function::appendSubFunction(float length, int i)
         // min: preceding max
         // max: preceding max + (current max - min)
         // diff: current diff
-        cur->update(prev->maxArgument, prev->maxArgument + cur->maxArgument - cur->minArgument, cur->symArg);
+        cur->update(prev->xEnd(), prev->xEnd() + cur->xEnd() - cur->xStart(), cur->symArg());
     }
 }
 
@@ -121,14 +121,14 @@ void function::removeSubFunction(int i)
     subfunction* cur;
     if(i == 0) { // removed from beginning
         cur = funcList[i];
-        cur->update(0, cur->maxArgument - cur->minArgument, cur->symArg);
+        cur->update(0, cur->xEnd() - cur->xStart(), cur->symArg());
         ++i;
     }
     for(; i < funcList.size(); ++i) {
         subfunction* prev = funcList[i-1];
         cur = funcList[i];
         translateValues(prev);
-        cur->update(prev->maxArgument, prev->maxArgument + cur->maxArgument - cur->minArgument, cur->symArg);
+        cur->update(prev->xEnd(), prev->xEnd() + cur->xEnd() - cur->xStart(), cur->symArg);
     }
 }
 
@@ -137,7 +137,7 @@ void function::setMaxArgument(float newMax)
     float scale = newMax/getMaxArgument();
     for(int i = 0; i < funcList.size(); i++) {
         subfunction* cur = funcList[i];
-        cur->update(cur->minArgument*scale, cur->maxArgument*scale, cur->symArg);
+        cur->update(cur->xStart() * scale, cur->xEnd() * scale, cur->symArg());
     }
 }
 
@@ -168,14 +168,14 @@ float function::changeLength(float newlength, int index)
     subfunction* cur = funcList[index];
     subfunction* prev;
 
-    cur->update(cur->minArgument, cur->minArgument+newlength, cur->symArg);
+    cur->update(cur->xStart(), cur->xStart() + newlength, cur->symArg());
     for(++index; index < funcList.size(); ++index) {
         prev = cur;
         cur = funcList[index];
-        if(cur->locked) {
-            cur->update(prev->maxArgument, secParent->getMaxArgument(), cur->symArg);
+        if(cur->IsLocked()) {
+            cur->update(prev->xEnd(), secParent->getMaxArgument(), cur->symArg());
         } else {
-            cur->update(prev->maxArgument, prev->maxArgument + cur->maxArgument - cur->minArgument, cur->symArg);
+            cur->update(prev->xEnd(), prev->xEnd() + cur->xEnd() - cur->xStart(), cur->symArg());
         }
     }
     return getMaxArgument();
@@ -255,24 +255,22 @@ int function::getSubfunctionNumber(subfunction *_sub)
     }
 }
 
-bool function::unlock(int _id)
+void function::unlock(int _id)
 {
-    lenAssert(funcList[_id]->locked);
-    funcList[_id]->locked = false;
-    return true;
+    lenAssert(funcList[_id]->isLocked());
+    funcList[_id]->unlock();
 }
 
-bool function::lock(int _id)
+void function::lock(int _id)
 {
-    lenAssert(!funcList[_id]->locked);
-    funcList[_id]->locked = true;
-    return true;
+    lenAssert(!funcList[_id]->isLocked());
+    funcList[_id]->lock();
 }
 
 int function::lockedFunc()
 {
     for(int i = 0; i < funcList.size(); ++i) {
-        if(funcList[i]->locked) return i;
+        if(funcList[i]->isLocked()) return i;
     }
     return -1;
 }
@@ -284,7 +282,7 @@ subfunction* function::getSubfunction(float x)
     const int s = funcList.size();
     for(; i < s; ++i) {
         cur = funcList[i];
-        if(cur->maxArgument >= x) {
+        if(cur->xEnd() >= x) {
             break;
         }
     }

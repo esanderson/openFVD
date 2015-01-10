@@ -43,13 +43,16 @@ secforced::secforced(track* getParent, mnode* first, float gettime): section(get
 int secforced::updateSection(int node)
 {
     if(rollFunc->lockedFunc() != -1) {
-        if(fabs(rollFunc->funcList.last()->symArg) > 0.00001f && rollFunc->funcList.last()->minArgument*F_HZ < node) node = F_HZ*rollFunc->funcList.last()->minArgument-1.5f;
+        if(fabs(rollFunc->funcList.last()->symArg()) > 0.00001f && rollFunc->funcList.last()->xStart() * F_HZ < node)
+            node = F_HZ * rollFunc->funcList.last()->xStart() - 1.5f;
     }
     if(normForce->lockedFunc() != -1) {
-        if(fabs(normForce->funcList.last()->symArg) > 0.00001f && normForce->funcList.last()->minArgument*F_HZ < node) node = F_HZ*normForce->funcList.last()->minArgument-1.5f;
+        if(fabs(normForce->funcList.last()->symArg()) > 0.00001f && normForce->funcList.last()->xStart() * F_HZ < node)
+            node = F_HZ * normForce->funcList.last()->xStart() - 1.5f;
     }
     if(latForce->lockedFunc() != -1) {
-        if(fabs(latForce->funcList.last()->symArg) > 0.00001f && latForce->funcList.last()->minArgument*F_HZ < node) node = F_HZ*latForce->funcList.last()->minArgument-1.5f;
+        if(fabs(latForce->funcList.last()->symArg()) > 0.00001f && latForce->funcList.last()->xStart() * F_HZ < node)
+            node = F_HZ * latForce->funcList.last()->xStart() - 1.5f;
     }
 
 
@@ -131,7 +134,7 @@ int secforced::updateSection(int node)
         curNode->fRollSpeed = 0.f;
         curNode->setRoll(rollFunc->getValue((i+1)/F_HZ)/F_HZ); // - rollFunc->getValue(i/1000.f));
         calcDirFromLast(i+1);
-        if(bOrientation == EULER || rollFunc->getSubfunction((i+1)/F_HZ)->degree == tozero) {
+        if(bOrientation == EULER || rollFunc->getSubfunction((i+1)/F_HZ)->degree() == tozero) {
             curNode->setRoll(glm::dot(curNode->vDir, glm::vec3(0.f, -1.f, 0.f))*curNode->fYawFromLast);
             curNode->fRollSpeed += glm::dot(curNode->vDir, glm::vec3(0.f, -1.f, 0.f))*curNode->fYawFromLast*F_HZ;
         }
@@ -437,11 +440,11 @@ bool secforced::isInFunction(int index, subfunction* func)
         for(int i = 1; i <= index; ++i) {
             dist += lNodes[i]->fHeartDistFromLast;
         }
-        if(dist >= func->minArgument && dist <= func->maxArgument) {
+        if(dist >= func->xStart() && dist <= func->xEnd()) {
             return true;
         }
         return false;
-    } else if(index/F_HZ >= func->minArgument && index/F_HZ <= func->maxArgument) {
+    } else if(index/F_HZ >= func->xStart() && index / F_HZ <= func->xEnd()) {
         return true;
     }
     return false;
