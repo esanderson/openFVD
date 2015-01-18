@@ -47,8 +47,9 @@ class subfunction
 {
 public:
     subfunction();
-    subfunction(float min, float max, float start, float diff, function* getparent = 0);
-    void update(float min, float max, float diff);
+    subfunction(float xStart, float xEnd, float yStart, float symArg, function* parent = NULL);
+
+    void update(float xStart, float xEnd, float symArg);
 
     float getValue(float x);
 
@@ -70,11 +71,17 @@ public:
     void saveSubFunc(std::stringstream& file);
     void loadSubFunc(std::stringstream& file);
 
+    // Set in changeDegree and doUndo and doRedo
+    // Set to cubic if parent function is funcNormal type; else set to quartic
+    // changeDegree called by transition widget
+    eDegree degree();
+    void setDegree(eDegree value);
+
     // Set to value passed into constructor or update method
     // When constructing a function, min passed to function is passed to sub
     // Set to zero for the first subfunction
     // Set to the max value of the preceding subfunction
-    float minArgument;
+    float xStart();
 
     // Set to value passed into constructor or update method
     // When constructing a function, max passed to function is passed to sub
@@ -82,8 +89,8 @@ public:
     // of section types other than Bezier
     // Updated to previous sub max argument + the difference between the old
     // values of max and min
-    // Constructed to previous sub max argument + a specified length
-    float maxArgument;
+    // Constructed to previous sub max argument + a specified length 
+    float xEnd();
 
     // Set to value passed into constructor or translateValues
     // When prepending this sub, set to startValue of sub which will come after
@@ -92,7 +99,7 @@ public:
     // Set to deltaPitch or deltaYaw for geometric sections
     // Set to 0 for the roll function of section types other than Bezier
     // When appending, set to the endValue of the preceding sub
-    float startValue;
+    float yStart();
 
     // Set in changeDegree: to -10 for quartic, 0 for quintic, 1 for plateau
     // Set in getValue for the toZero sub type
@@ -101,31 +108,33 @@ public:
     // For quartic, -10 for type 0; for other types, set to 1 - arg1 or
     // something like 0.5f +/- 0.5f / (1 + 5 * ui->quarticSpin->value())
     // For quintic, 0 for type 0, -spinBox for type 1, and +spinBox for type 2
-    float arg1;
+    float arg1();
+    void setArg1(float value);
 
     // Set to value passed into constructor or update method
     // When constructing a function, set to end - start arguments but these are
     // always the same value so the result is 0
     // When appending or prepending, set to 0
     // Set in the transition widget when change spinbox is changed
-    float symArg;
+    float symArg();
+    void setSymArg(float value);
 
     // Initialized to false in the constructor and set in the unlock/lock
     // methods of the parent function
-    bool locked;
+    bool isLocked();
+    void lock();
+    void unlock();
 
     //timewarp arguments
     // Set to zero in constructor and when degree is changed to toZero type
     // Set in doUndo and doRedo and by transition widget
-    float centerArg;
-    float tensionArg;
+    float centerArg();
+    void setCenterArg(float value);
 
-    // Set in changeDegree and doUndo and doRedo
-    // Set to cubic if parent function is funcNormal type; else set to quartic
-    // changeDegree called by transtion widget
-    enum eDegree degree;
+    float tensionArg();
+    void setTensionArg(float value);
 
-    function* parent; // Set in constructor
+    function* parent();
 
     // Cleared and 2 points are appended in changeDegree for the freeform type
     // Set in the graph widget when dragging points
@@ -135,10 +144,29 @@ public:
     // freeform type and is called by the graph widget
     QList<float> valueList;
 
+    int getNodeIndex();
+
 private:
     float applyTension(float x);
     float applyCenter(float x);
-};
 
+    eDegree _degree;
+
+    float _xStart; // replaces minArgument
+    float _xEnd;   // replaces maxArgument
+
+    float _yStart; // replaces startValue
+
+    float _arg1;
+    float _symArg;
+
+    // timewarp arguments
+    float _centerArg;
+    float _tensionArg;
+
+    bool  _isLocked;
+
+    function* _parent;
+};
 
 #endif // SUBFUNCTION_H
