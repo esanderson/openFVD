@@ -20,7 +20,6 @@
 #include "function.h"
 #include "section.h"
 #include "track.h"
-#include "mnode.h"
 
 #include "exportfuncs.h"
 
@@ -42,7 +41,6 @@ float interpolate(float t, float x1, float x2, float x3, float x4)
     float t1 = 1-t;
     return t1*t1*t1*x1 + 3*t*t1*t1*x2 + 3*t*t*t1*x3 + t*t*t*x4;
 }
-
 
 subfunction::subfunction()
 {
@@ -109,30 +107,30 @@ void subfunction::changeDegree(enum eDegree newDegree)
     case cubic:
         break;
     case quartic:
-        arg1 = -10.f;
+        arg1 = -10.0f;
         break;
     case quintic:
-        arg1 = 0.f;
+        arg1 = 0.0f;
         break;
     case sinusoidal:
         break;
     case plateau:
-        arg1 = 1.f;
+        arg1 = 1.0f;
         break;
     case freeform:
         pointList.clear();
         bez_t b;
-        b.x = 0.3;
-        b.y = 0.0;
+        b.x = 0.3f;
+        b.y = 0.0f;
         pointList.append(b);
-        b.x = 0.7;
-        b.y = 1.0;
+        b.x = 0.7f;
+        b.y = 1.0f;
         pointList.append(b);
         updateBez();
         break;
     case tozero:
-        centerArg = 0;
-        tensionArg = 0;
+        centerArg = 0.0f;
+        tensionArg = 0.0f;
         symArg = -startValue;
         break;
     default:
@@ -283,7 +281,6 @@ float subfunction::getValue(float x)
 void subfunction::translateValues(float newStart)
 {
     startValue = newStart;
-
 
     if(degree == tozero) {
         symArg = -startValue;

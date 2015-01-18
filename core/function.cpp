@@ -20,7 +20,7 @@
 #include "section.h"
 
 #include "exportfuncs.h"
-#include "lenassert.h"
+#include "../lenassert.h"
 
 function::~function()
 {
@@ -112,9 +112,11 @@ void function::removeSubFunction(int i)
     int index = this->funcList.size();
     lenAssert(index > 1);
     if(index <= 1) {
+        // Function list is empty
         return;
     }
 
+    // Remove at the specified index
     delete funcList[i];
     this->funcList.removeAt(i);
 
@@ -173,6 +175,7 @@ float function::changeLength(float newlength, int index)
         prev = cur;
         cur = funcList[index];
         if(cur->IsLocked()) {
+			// Function is locked to the section's maximum argument
             cur->update(prev->xEnd(), secParent->getMaxArgument(), cur->symArg());
         } else {
             cur->update(prev->xEnd(), prev->xEnd() + cur->xEnd() - cur->xStart(), cur->symArg());

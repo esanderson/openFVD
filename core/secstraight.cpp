@@ -25,7 +25,8 @@
 
 using namespace std;
 
-secstraight::secstraight(track* getParent, mnode* first, float getlength) : section(getParent, straight, first)
+secstraight::secstraight(track* getParent, mnode* first, float getlength)
+    : section(getParent, straight, first)
 {
     this->fHLength = getlength;
     this->bArgument = TIME;

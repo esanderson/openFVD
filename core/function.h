@@ -48,8 +48,8 @@ public:
     void setMaxArgument(float newMax);
     float getMaxArgument() const { return funcList[funcList.size() - 1]->xEnd(); }
 
-    float getMaxValue();
-    float getMinValue();
+    //float getMaxValue(); Not used
+    //float getMinValue(); Not used
 
     void translateValues(subfunction* caller);
 

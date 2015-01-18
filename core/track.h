@@ -52,7 +52,7 @@ class track
 {
 public:
     track();
-    track(trackHandler* _parent ,glm::vec3 startPos, float startYaw, float heartLine = 0.0);
+    track(trackHandler* _parent ,glm::vec3 startPos, float startYaw, float heartLine = 0.0f);
     ~track();
     void removeSection(int index);
     void removeSection(section* fromSection);

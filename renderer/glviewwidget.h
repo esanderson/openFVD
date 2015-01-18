@@ -17,17 +17,20 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
 
-#ifndef Q_OS_MAC // on Win / Unix
-    #include "GL/glew.h"
-    #include "GL/glu.h"
-#endif
-#ifdef Q_OS_MAC
+#*/
+#include <QtCore>
+
+#ifdef Q_OS_OSX
     #include <gl3.h>
     #include <gl3ext.h>
     #include <OpenGL.h>
     #include <glu.h>
+#endif
+
+#ifndef Q_OS_OSX // on Win / Unix
+    #include "GL/glew.h"
+    #include "GL/glu.h"
 #endif
 
 #include <QtGlobal>

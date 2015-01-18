@@ -73,7 +73,7 @@ void transitionWidget::changeSubfunction(subfunction *_newSubfunc)
             ui->changeSpin->setSuffix(QString("%1/s").arg(QChar(0xb0)));
             break;
         default:
-            lenAssert(0 && "unhandeled case");
+            lenAssert(0 && "unhandled case");
             break;
         }
     } else {
@@ -90,7 +90,7 @@ void transitionWidget::changeSubfunction(subfunction *_newSubfunc)
             ui->changeSpin->setSuffix(QString("%1/").arg(QChar(0xb0)).append(gloParent->mOptions->getLengthString()));
             break;
         default:
-            lenAssert(0 && "unhandeled case");
+            lenAssert(0 && "unhandled case");
             break;
         }
     }
@@ -315,8 +315,6 @@ void transitionWidget::on_transitionBox_currentIndexChanged(int index)
 
     selectedFunc->changeDegree((eDegree)index);
     selectedFunc->parent()->translateValues(selectedFunc);
-
-
 
     inTrack->trackData->updateTrack(inTrack->trackData->activeSection, selectedFunc->getNodeIndex());
     mParent->redrawGraphs();
