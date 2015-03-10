@@ -139,9 +139,9 @@ win32 {
     INCLUDEPATH += "./renderer/"
     INCLUDEPATH += "./core/"
 
-    #INCLUDEPATH += "C:\Libraries\glew-1.11.0\include" # path-to-glew/include
-    #INCLUDEPATH += "C:\Libraries\glm" #path-to-glm"
-    #INCLUDEPATH += "C:\Libraries\lib3ds-20080909\src" #path-to-lib3ds
+    INCLUDEPATH += "C:\Libraries\glew-1.11.0\include" # path-to-glew/include
+    INCLUDEPATH += "C:\Libraries\glm" #path-to-glm"
+    INCLUDEPATH += "C:\Libraries\lib3ds-20080909\src" #path-to-lib3ds
 
     RC_FILE = winicon.rc
 

@@ -48,9 +48,7 @@ class section
 public:
     section(track* getParent, enum secType _type, mnode* first);
     virtual ~section();
-
     float length;
-
     virtual int updateSection(int node = 0) = 0;
     virtual int exportSection(std::fstream *file, mnode* anchor, float mPerNode, float fHeart, glm::vec3& vHeartLat, glm::vec3& Norm, float fRollThresh);
     virtual void fillPointList(QList<glm::vec4> &List, QList<glm::vec3> &Normals, mnode* anchor, float mPerNode, float fHeart);
@@ -65,11 +63,9 @@ public:
     virtual float getMaxArgument() = 0;
     virtual bool isLockable(function* _func) = 0;
     virtual bool isInFunction(int index, subfunction* func) = 0;
-
     float getSpeed();
     bool setLocked(eFunctype func, int _id, bool _active);
     void calcDirFromLast(int i);
-
     QList<mnode*> lNodes;
     track* parent;
     function* rollFunc;
@@ -79,17 +75,10 @@ public:
     bool bSpeed;
     float fVel;
 
-    // QUATERNION (default except for geometric) or EULER; changed in track
-    // widget
     bool bOrientation;
-
-    // TIME (default) or DISTANCE; changed in track widget
     bool bArgument;
 
     // Straight Section Parameters
-    // Set in constructor or in changelength method to parameter
-    // Set in updateSection to the max of the last subfunction in the roll
-    // function
     float fHLength;
 
     // Curved Section Parameters

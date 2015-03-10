@@ -1,7 +1,7 @@
 #ifndef SHADERS_H
 #define SHADERS_H
 
-#include "../ui/mainwindow.h"
+#include "ui/mainwindow.h"
 
 void printGLSLCompileLog( GLuint shaderHandle ) {
     GLint shaderError;

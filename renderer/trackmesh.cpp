@@ -1194,7 +1194,7 @@ void trackMesh::buildMeshes(int fromNode)
         break;
     case vekoma:
         numRails = 3;
-        railSpacing = 0.6f;
+        railSpacing = 0.60;
         crosstieSpacing = 1.5f;
         spineHeight = 0.85f * (trackData->fHeart < 0 ? -1.f : 1.f);
         spineSize = 0.22f;
@@ -1558,14 +1558,14 @@ void trackMesh::buildMeshes(int fromNode)
                 }
                 else
                 {
-                    P1 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, -0.03f);
-                    P2 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, 0.03f);
-                    P3 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, -0.03f);
-                    P4 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, 0.03f);
-                    P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, -0.03f);
-                    P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, 0.03f);
-                    P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, -0.03f);
-                    P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, 0.03f);
+                    P1 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, -0.03);
+                    P2 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, 0.03);
+                    P3 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, -0.03);
+                    P4 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, 0.03);
+                    P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, -0.03);
+                    P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, 0.03);
+                    P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, -0.03);
+                    P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, 0.03);
                 }
 
                 createBox(crossties, P1, P2, P3, P4, P5, P6, P7, P8);
@@ -1573,14 +1573,14 @@ void trackMesh::buildMeshes(int fromNode)
 
                 if(index)
                 {
-                    P1 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.13, 0.03f);
-                    P2 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.07, 0.03f);
-                    P3 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.13, 0.03f);
-                    P4 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.07, 0.03f);
-                    P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.07, -0.03f);
-                    P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.13, -0.03f);
-                    P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.07, -0.03f);
-                    P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.13, -0.03f);
+                    P1 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.13, 0.03);
+                    P2 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.07, 0.03);
+                    P3 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.13, 0.03);
+                    P4 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.07, 0.03);
+                    P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.07, -0.03);
+                    P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.13, -0.03);
+                    P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.07, -0.03);
+                    P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.13, -0.03);
 
                     createBox(crossties, P1, P2, P3, P4, P5, P6, P7, P8);
                     createShadowBox(crosstieshadows, P1, P2, P3, P4, P5, P6, P7, P8);
@@ -2595,7 +2595,7 @@ void trackMesh::build3ds(const int _sec, QVector<float> *_vertices, QVector<unsi
         break;
     case vekoma:
         numRails = 3;
-        railSpacing = 0.6f;
+        railSpacing = 0.60;
         crosstieSpacing = 1.5f;
         spineHeight = 0.85f * (trackData->fHeart < 0 ? -1.f : 1.f);
         spineSize = 0.22f;
@@ -2874,28 +2874,28 @@ void trackMesh::build3ds(const int _sec, QVector<float> *_vertices, QVector<unsi
             }
             else
             {
-                P1 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, -0.03f);
-                P2 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, 0.03f);
-                P3 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, -0.03f);
-                P4 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, 0.03f);
-                P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, -0.03f);
-                P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, 0.03f);
-                P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, -0.03f);
-                P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, 0.03f);
+                P1 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, -0.03);
+                P2 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing, 0.03);
+                P3 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, -0.03);
+                P4 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing, 0.03);
+                P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, -0.03);
+                P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing, 0.03);
+                P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, -0.03);
+                P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing, 0.03);
             }
 
             create3dsBox(_vertices, _indices, P1, P2, P3, P4, P5, P6, P7, P8);
 
             if(index)
             {
-                P1 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.13f, 0.03f);
-                P2 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.07f, 0.03f);
-                P3 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.13f, 0.03f);
-                P4 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.07f, 0.03f);
-                P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.07f, -0.03f);
-                P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.13f, -0.03f);
-                P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.07f, -0.03f);
-                P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.13f, -0.03f);
+                P1 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.13, 0.03);
+                P2 = lastNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), -railSpacing+0.07, 0.03);
+                P3 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.13, 0.03);
+                P4 = lastNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), -railSpacing+0.07, 0.03);
+                P5 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.07, -0.03);
+                P6 = curNode->vRelPos(-trackData->fHeart+railWidth*(mysign > 0 ? 0.5 : 1), railSpacing-0.13, -0.03);
+                P7 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.07, -0.03);
+                P8 = curNode->vRelPos(-trackData->fHeart-railWidth*(mysign > 0 ? 1 : 0.5), railSpacing-0.13, -0.03);
 
                 create3dsBox(_vertices, _indices, P1, P2, P3, P4, P5, P6, P7, P8);
             }

@@ -31,8 +31,7 @@ QApplication* application;
 
 void myMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
-    FILE* log;
-    fopen_s(&log, "fvd.log", "a");
+    FILE* log = fopen("fvd.log", "a");
 
     QByteArray localMsg = msg.toLocal8Bit();
     switch (type) {
@@ -67,15 +66,23 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext &, const QString 
 
 int main(int argc, char *argv[])
 {
-    //QApplication::setGraphicsSystem("raster");
     application = new QApplication(argc, argv);
+#ifndef Q_OS_MAC
     qInstallMessageHandler(myMessageHandler);
 
-    qDebug() << "Main Window init";
-    FILE* log;
-    fopen_s(&log, "fvd.log", "w");
+    FILE* log = fopen("fvd.log", "w");
     fprintf(log, "FVD++ v0.77 Logfile\n");
     fclose(log);
+#endif
+
+#ifdef Q_OS_MAC
+    QGLFormat fmt;
+    fmt.setProfile(QGLFormat::CoreProfile);
+    fmt.setVersion(3,2);
+    fmt.setSampleBuffers(true);
+    fmt.setSamples(4);
+    QGLFormat::setDefaultFormat(fmt);
+#endif
 
     MainWindow w;
     w.show();

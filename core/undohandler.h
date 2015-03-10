@@ -27,7 +27,7 @@ class undoHandler
 {
 public:
     undoHandler();
-    undoHandler(int _stackSize);
+    undoHandler(int _stackSize = 15);
     ~undoHandler();
     void doUndo();
     void doRedo();

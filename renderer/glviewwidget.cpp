@@ -28,7 +28,7 @@
 #include "mytexture.h"
 #include "myframebuffer.h"
 
-#include "../osx/common.h"
+#include "osx/common.h"
 #include <string>
 
 

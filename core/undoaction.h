@@ -94,9 +94,6 @@ public:
     int sectionNumber;
     eFunctype inFunction;
     int subfunctionNumber;
-
-private:
-    int getNodeIndex(trackHandler* hTrack);
 };
 
 #endif // UNDOACTION_H

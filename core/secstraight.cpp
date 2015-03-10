@@ -25,8 +25,7 @@
 
 using namespace std;
 
-secstraight::secstraight(track* getParent, mnode* first, float getlength)
-    : section(getParent, straight, first)
+secstraight::secstraight(track* getParent, mnode* first, float getlength) : section(getParent, straight, first)
 {
     this->fHLength = getlength;
     this->bArgument = TIME;
@@ -208,7 +207,7 @@ bool secstraight::isInFunction(int index, subfunction* func)
     if(func == NULL) return false;
     if(index >= lNodes.size()) return false;
     float dist = lNodes[index]->fTotalHeartLength - lNodes[0]->fTotalHeartLength;
-    if(dist >= func->xStart() && dist <= func->xEnd()) {
+    if(dist >= func->minArgument && dist <= func->maxArgument) {
         return true;
     }
     return false;

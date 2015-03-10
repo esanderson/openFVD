@@ -22,6 +22,7 @@
 
 #include "track.h"
 
+
 #define RELTHRESH 1.0f
 
 using namespace std;
@@ -141,7 +142,7 @@ int section::exportSection(fstream *file, mnode* anchor, float mPerNode, float f
 
             char cTemp;
 
-            cTemp = (char)0xFF;
+            cTemp = 0xFF;
             writeBytes(file, &cTemp, 1); // CONT ROLL
             cTemp = fabs(V.y) < fRollThresh ? 0x00 : 0xff;
             writeBytes(file, &cTemp, 1); // REL ROLL

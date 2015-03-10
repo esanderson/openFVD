@@ -50,7 +50,7 @@ track::track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float he
     anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + 9.80665f*anchorNode->fPosHearty(0.9*heartLine);
     this->fHeart = heartLine;
     fFriction = 0.03f;
-    fResistance = 2e-5f;
+    fResistance = 2e-5;
     hasChanged = true;
     drawTrack = true;
     drawHeartline = 0;
@@ -375,13 +375,13 @@ int track::exportTrack(fstream *file, float mPerNode, int fromIndex, int toIndex
     }
 
 
-    int size = (exportPoints.size()-1);
+    size_t size = (exportPoints.size()-1);
     float *a = (float*)malloc(size*sizeof(float));
     float *b = (float*)malloc(size*sizeof(float));
     float *c = (float*)malloc(size*sizeof(float));
     glm::vec3 *d = (glm::vec3*)malloc(size*sizeof(glm::vec3));
 
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
         if(i == 0)
         {
@@ -411,14 +411,14 @@ int track::exportTrack(fstream *file, float mPerNode, int fromIndex, int toIndex
     c[0] = c[0]/b[0];
     d[0] = d[0]/b[0];
 
-    for(int i = 1; i < size; ++i)
+    for(size_t i = 1; i < size; ++i)
     {
         float m = 1.f/(b[i]-a[i]*c[i-1]);
         c[i] = c[i] * m;
         d[i] = m*(d[i] - a[i]*d[i-1]);
     }
 
-    for(int i = size-1; i-- > 0;)
+    for(size_t i = size-1; i-- > 0;)
     {
         d[i] = d[i] - c[i] * d[i+1];
         bezList[i+1]->Kp1 = d[i];
@@ -492,12 +492,12 @@ int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toInde
 
     char cTemp;
 
-    cTemp = (char)0xFF;
+    cTemp = 0xFF;
     writeBytes(file, &cTemp, 1); // CONT ROLL
     cTemp = 0x00;
     if(fabs(V.y) > fRollThresh)
     {
-        cTemp = (char)0xFF;
+        cTemp = 0xFF;
     }
     writeBytes(file, &cTemp, 1); // equalDistanceCP
     cTemp = 0x00;
@@ -547,12 +547,12 @@ int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toInde
 
         char cTemp;
 
-        cTemp = (char)0xFF;
+        cTemp = 0xFF;
         writeBytes(file, &cTemp, 1); // CONT ROLL
         cTemp = 0x00;
         if(fabs(V.y) > fRollThresh)
         {
-            cTemp = (char)0xFF;
+            cTemp = 0xFF;
         }
         writeBytes(file, &cTemp, 1); // equalDistanceCP
         cTemp = 0x00;
@@ -601,12 +601,12 @@ int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toInde
     }
     writeBytes(file, (const char*)&(temp), 4);
 
-    cTemp = (char)0xFF;
+    cTemp = 0xFF;
     writeBytes(file, &cTemp, 1); // CONT ROLL
     cTemp = 0x00;
     if(fabs(V.y) > fRollThresh)
     {
-        cTemp = (char)0xFF;
+        cTemp = 0xFF;
     }
     writeBytes(file, &cTemp, 1); // equalDistanceCP
     cTemp = 0x00;
@@ -653,12 +653,12 @@ int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toInde
     }
     writeBytes(file, (const char*)&(temp), 4);
 
-    cTemp = (char)0xFF;
+    cTemp = 0xFF;
     writeBytes(file, &cTemp, 1); // CONT ROLL
     cTemp = 0x00;
     if(fabs(V.y) > fRollThresh)
     {
-        cTemp = (char)0xFF;
+        cTemp = 0xFF;
     }
     writeBytes(file, &cTemp, 1); // equalDistanceCP
     cTemp = 0x00;
@@ -694,13 +694,13 @@ int track::exportTrack3(fstream *file, float mPerNode, int fromIndex, int toInde
     }
 
 
-    int size = bezList.size();
+    size_t size = bezList.size();
     QVector<float> a = QVector<float>(size);
     QVector<float> b = QVector<float>(size);
     QVector<float> c = QVector<float>(size);
     QVector<glm::vec3> d = QVector<glm::vec3>(size);
 
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
         d[i] = bezList[i]->P1;
         if(i == 0)
@@ -728,14 +728,14 @@ int track::exportTrack3(fstream *file, float mPerNode, int fromIndex, int toInde
     c[0] = c[0]/b[0];
     d[0] = d[0]/b[0];
 
-    for(int i = 1; i < size; ++i)
+    for(size_t i = 1; i < size; ++i)
     {
         float m = 1.f/(b[i]-a[i]*c[i-1]);
         c[i] = c[i] * m;
         d[i] = m*(d[i] - a[i]*d[i-1]);
     }
 
-    for(int i = size-1; i-- > 0;)
+    for(size_t i = size-1; i-- > 0;)
     {
         d[i] = d[i] - c[i] * d[i+1];
     }
@@ -804,13 +804,13 @@ void track::exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toInde
         qDebug("%d\n", exportPoints[i]);
     }
 
-    int size = exportPoints.size();
+    size_t size = exportPoints.size();
     QVector<float> a = QVector<float>(size);
     QVector<float> b = QVector<float>(size);
     QVector<float> c = QVector<float>(size);
     QVector<glm::vec3> d = QVector<glm::vec3>(size);
 
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
         int point = exportPoints[i];
         mnode* curNode = getPoint(point < 0 ? -point : point);
@@ -831,20 +831,20 @@ void track::exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toInde
     c[0] = c[0]/b[0];
     d[0] = d[0]/b[0];
 
-    for(int i = 1; i < size; ++i) {
+    for(size_t i = 1; i < size; ++i) {
         float m = 1.f/(b[i]-a[i]*c[i-1]);
         c[i] = c[i] * m;
         d[i] = m*(d[i] - a[i]*d[i-1]);
     }
 
-    for(int i = size-1; i-- > 0;) {
+    for(size_t i = size-1; i-- > 0;) {
         d[i] = d[i] - c[i] * d[i+1];
     }
 
     // resolve strictness
     QList<glm::vec4> e;
     e.append(glm::vec4(d[0], 1.f));
-    for(int i = 1; i < size-1; ++i) {
+    for(size_t i = 1; i < size-1; ++i) {
         int point = exportPoints[i];
         int ppoint = exportPoints[i-1];
         int npoint = exportPoints[i+1];
@@ -915,7 +915,6 @@ void track::exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toInde
             e.append(glm::vec4(d[i], 0.f));
         }
     }
-
     e.append(glm::vec4(d[size-1], 1.f));
 
     float temp = glm::length(glm::vec3(anchor->vDir.x, 0.f, anchor->vDir.z));
@@ -939,7 +938,7 @@ void track::exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toInde
     int lp = abs(exportPoints.last());
     float endLen = getPoint(lp)->fTotalHeartLength;
 
-    for(int i = 0; i < size; ++i) {
+    for(size_t i = 0; i < size; ++i) {
         int point = exportPoints[i];
         mnode* curNode = getPoint(point < 0 ? -point : point);
 

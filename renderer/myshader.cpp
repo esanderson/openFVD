@@ -38,9 +38,9 @@ myShader::myShader(const char* _vertex, const char* _fragment)
 #endif
 
     char* v1 = new char[v.size()+1];
-    strcpy_s(v1, v.size()+1, v.toLocal8Bit().data());
+    strcpy(v1, v.toLocal8Bit().data());
     char* v2 = new char[f.size()+1];
-    strcpy_s(v2, f.size()+1, f.toLocal8Bit().data());
+    strcpy(v2, f.toLocal8Bit().data());
 
     const char* strings[2] = {v1, v2};
 

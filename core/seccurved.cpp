@@ -303,7 +303,7 @@ bool seccurved::isInFunction(int index, subfunction* func)
 {
     if(func == NULL) return false;
     float angle = lAngles[index];
-    if(angle >= func->xStart() && angle <= func->xEnd()) {
+    if(angle >= func->minArgument && angle <= func->maxArgument) {
         return true;
     }
     return false;

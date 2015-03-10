@@ -46,10 +46,10 @@ public:
     float getValue(float x);
 
     void setMaxArgument(float newMax);
-    float getMaxArgument() const { return funcList[funcList.size() - 1]->xEnd(); }
+    float getMaxArgument() const { return funcList[funcList.size()-1]->maxArgument; }
 
-    //float getMaxValue(); Not used
-    //float getMinValue(); Not used
+    float getMaxValue();
+    float getMinValue();
 
     void translateValues(subfunction* caller);
 
@@ -63,21 +63,19 @@ public:
     void saveFunction(std::stringstream& file);
     void loadFunction(std::stringstream& file);
 
-    void unlock(int _id);
-    void lock(int _id);
+    bool unlock(int _id);
+    bool lock(int _id);
 
     int lockedFunc();
     subfunction* getSubfunction(float x);
 
     QList<subfunction*> funcList;
 
-    // Initialized to -1 in constructor
-    // Set only in appendSubfunction but never read
     int activeSubfunction;
-    const enum eFunctype type; // Set by constructor
-    section* const secParent; // Set by constructor
+    const enum eFunctype type;
+    section* const secParent;
 private:
-    float startValue; // Initialized by constructor
+    float startValue;
 };
 
 #endif // FUNCTION_H

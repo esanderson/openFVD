@@ -34,7 +34,3 @@
 # QT Crap
 *.pro.user
 *.user
-
-glm-0.9.5.1.zip
-glm/*
-doc/*

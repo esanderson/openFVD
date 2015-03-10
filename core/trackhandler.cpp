@@ -32,7 +32,7 @@ extern glViewWidget* glView;
 trackHandler::trackHandler(QString _name, int _id)
 {
     id = _id;
-    this->trackData = new track(this, glm::vec3(0.f, 5.f, 0.f), 0.0f, 1.1f);
+    this->trackData = new track(this, glm::vec3(0.f, 5.f, 0.f), 0, 1.1);
     trackData->name = _name;
     this->listItem = new QTreeWidgetItem(id);
     listItem->setFlags(listItem->flags() | Qt::ItemIsEditable);
