@@ -3,7 +3,7 @@
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include <fstream>
 #include <QList>
 
-class function;
+class func;
 
 enum eDegree
 {
@@ -43,11 +43,11 @@ typedef struct bez_s
     float y;
 } bez_t;
 
-class subfunction
+class subfunc
 {
 public:
-    subfunction();
-    subfunction(float min, float max, float start, float diff, function* getparent = 0);
+    subfunc();
+    subfunc(float min, float max, float start, float diff, func* getparent = 0);
     void update(float min, float max, float diff);
 
     float getValue(float x);
@@ -86,7 +86,7 @@ public:
     enum eDegree degree;
 
 
-    function* parent;
+    func* parent;
     QList<bez_t> pointList;
     QList<float> valueList;
 

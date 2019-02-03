@@ -3,7 +3,7 @@
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@ class transitionWidget : public QWidget
 public:
     explicit transitionWidget(QWidget *parent = 0);
     ~transitionWidget();
-    void changeSubfunction(subfunction* _newSubfunc);
-    subfunction* getSelectedFunc();
+    void changeSubfunc(subfunc* _newSubfunc);
+    subfunc* getSelectedFunc();
     void adjustLengthSteps(secType _type, bool _argument);
     
     graphWidget* mParent;
@@ -70,7 +70,7 @@ public slots:
 
 private:
     Ui::transitionWidget *ui;
-    subfunction* selectedFunc;
+    subfunc* selectedFunc;
     bool phantomChanges;
 };
 

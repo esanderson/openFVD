@@ -3,7 +3,7 @@
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -46,11 +46,11 @@ public:
     void activateGraph(graphHandler* curGraph);
     void deactivateGraph(graphHandler* curGraph);
     void redrawGraphs(bool otherArgument = false);
-    bool changeSelection(subfunction* _sel);
+    bool changeSelection(subfunc* _sel);
     void keyPressEvent(QKeyEvent* event);
 
     trackHandler* selTrack;
-    subfunction* selFunc;
+    subfunc* selFunc;
     transitionWidget* transitionHandler;
 
     QCPAxis* yAxes[4];

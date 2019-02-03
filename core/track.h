@@ -3,7 +3,7 @@
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "secforced.h"
 #include "secgeometric.h"
 #include "secbezier.h"
+#include "secnlcsv.h"
 #include "sectionhandler.h"
 #include <QList>
 #include <fstream>

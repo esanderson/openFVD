@@ -1,6 +1,6 @@
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ noLimitsImporter::noLimitsImporter(trackHandler* _track, QString _fileName)
 bool noLimitsImporter::importAsNlTrack()
 {
     fstream fin(fileName.toLocal8Bit().data(), ios::in | ios::binary);
-    if(fin == NULL)
+    if(!fin)
     {
         return false;
     }
@@ -234,7 +234,7 @@ bool noLimitsImporter::importAsNlTrack()
 bool noLimitsImporter::importAsTxt()
 {
     fstream fin(fileName.toLocal8Bit().data(), ios::in);
-    if(fin == NULL)
+    if(!fin)
     {
         return false;
     }

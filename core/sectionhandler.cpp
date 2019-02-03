@@ -1,6 +1,6 @@
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ sectionHandler::sectionHandler(track* _track, enum secType _type, int _id)
         break;
     case anchor:
         listItem->setText(2, QString("Anchor"));
+        break;
+    case nolimitscsv:
+        listItem->setText(2, QString("NoLimits CSV"));
         break;
     }
 }

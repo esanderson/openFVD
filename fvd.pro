@@ -1,7 +1,7 @@
 #-------------------------------------------------
 #
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 # DEPENDENCIES
 # 
-# QT (tested with 5.2.1)
+# QT (tested with 5.4.0)
 # glew (for Windows and Linux builds only)
 # glm (tested with 0.9.5.1-1)
 # lib3ds
@@ -76,7 +76,8 @@ SOURCES += main.cpp\
     ui/graphhandler.cpp \
     ui/exportui.cpp \
     ui/draglabel.cpp \
-    ui/conversionpanel.cpp
+    ui/conversionpanel.cpp \
+    core/secnlcsv.cpp
 
 HEADERS  += core/undohandler.h \
     core/undoaction.h \
@@ -119,7 +120,8 @@ HEADERS  += core/undohandler.h \
     ui/exportui.h \
     ui/draglabel.h \
     ui/conversionpanel.h \
-    lenassert.h
+    lenassert.h \
+    core/secnlcsv.h
 
 FORMS    += ui/transitionwidget.ui \
     ui/trackwidget.ui \
@@ -134,21 +136,22 @@ FORMS    += ui/transitionwidget.ui \
     ui/exportui.ui \
     ui/conversionpanel.ui
 
-win32 {
+!unix:!macx {
     INCLUDEPATH += "./ui/"
     INCLUDEPATH += "./renderer/"
     INCLUDEPATH += "./core/"
 
-    INCLUDEPATH += "C:\Libraries\glew-1.11.0\include" # path-to-glew/include
-    INCLUDEPATH += "C:\Libraries\glm" #path-to-glm"
-    INCLUDEPATH += "C:\Libraries\lib3ds-20080909\src" #path-to-lib3ds
+	INCLUDEPATH += "C:\Development\Libraries\glew-1.12.0\include" # path-to-glew/include
+	INCLUDEPATH += "C:\Development\Libraries\glm" #path-to-glm"
+	INCLUDEPATH += "C:\Development\Libraries\lib3ds-20080909\src" #path-to-lib3ds
 
     RC_FILE = winicon.rc
 
     LIBS += -lOpenGL32
     LIBS += -lGlU32
-    LIBS += "C:\Libraries\glew-1.11.0\lib\Release\Win32\glew32.lib" #path-to-glew\lib\Release\Win32\glew32.lib
-    LIBS += "C:\Libraries\glew-1.11.0\bin\Release\Win32\glew32.dll" #path-to-glew\bin\Release\Win32\glew32.dll
+	LIBS += "C:\Development\Libraries\glew-1.12.0\lib\Release\x64\glew32.lib" #path-to-glew\lib\Release\Win32\glew32.lib
+	LIBS += "C:\Development\Libraries\glew-1.12.0\bin\Release\x64\glew32.dll" #path-to-glew\bin\Release\Win32\glew32.dll
+	LIBS += "C:\Development\Libraries\lib3ds-20080909\build-lib3ds-64Bit-Release\release\lib3ds.dll" #path-to-glew\bin\Release\Win32\glew32.dll
 }
 
 unix:!macx {

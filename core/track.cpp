@@ -1,6 +1,6 @@
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ track::track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float he
     povPos = glm::vec2(0, 0);
     mParent = _parent;
     anchorNode->updateNorm();
-    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + 9.80665f*anchorNode->fPosHearty(0.9*heartLine);
+    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + F_G*anchorNode->fPosHearty(0.9*heartLine);
     this->fHeart = heartLine;
     fFriction = 0.03f;
     fResistance = 2e-5;
@@ -132,13 +132,13 @@ void track::removeSmooth(int fromNode)
             fromNode -= curSection->lNodes.size()-1;
             continue;
         }
-        if(fromNode != 0) curNode = curSection->lNodes[fromNode-1];
-        else if(i != 0) curNode = lSections[i-1]->lNodes.last();
+		if(fromNode != 0) curNode = &curSection->lNodes[fromNode-1];
+		else if(i != 0) curNode = &lSections[i-1]->lNodes.last();
         else curNode = this->anchorNode;
         for(int j = fromNode; j < curSection->lNodes.size(); ++j)
         {
             prevNode = curNode;
-            curNode = curSection->lNodes[j];
+			curNode = &curSection->lNodes[j];
             if(fabs(curNode->fSmoothSpeed) > 0.)
             {
                 temp -= curNode->fSmoothSpeed;
@@ -173,13 +173,13 @@ void track::applySmooth(int fromNode)
             fromNode -= curSection->lNodes.size()-1;
             continue;
         }
-        if(fromNode != 0) curNode = curSection->lNodes[fromNode-1];
-        else if(i != 0) curNode = lSections[i-1]->lNodes.last();
+		if(fromNode != 0) curNode = &curSection->lNodes[fromNode-1];
+		else if(i != 0) curNode = &lSections[i-1]->lNodes.last();
         else curNode = this->anchorNode;
         for(int j = fromNode; j < curSection->lNodes.size(); ++j)
         {
             prevNode = curNode;
-            curNode = curSection->lNodes[j];
+			curNode = &curSection->lNodes[j];
             if(fabs(curNode->fSmoothSpeed) > 0.)
             {
                 temp += curNode->fSmoothSpeed;
@@ -239,7 +239,7 @@ void track::updateTrack(int index, int iNode)
     int updateFrom = lSections.at(index)->updateSection(iNode);
     for(int i = index+1; i < lSections.size(); i++)
     {
-        lSections.at(i)->lNodes.prepend(lSections.at(i-1)->lNodes.at(lSections.at(i-1)->lNodes.size()-1));
+		lSections.at(i)->lNodes.prepend(lSections.at(i-1)->lNodes[lSections.at(i-1)->lNodes.size()-1]);
         lSections.at(i)->updateSection(0);
     }
 
@@ -250,7 +250,8 @@ void track::updateTrack(int index, int iNode)
 
     nodeAt = nodeAt > getNumPoints(lSections[index])+updateFrom ? getNumPoints(lSections[index])+updateFrom : nodeAt;
 
-    mParent->mMesh->buildMeshes(nodeAt);
+    if(mParent->mMesh != NULL)
+        mParent->mMesh->buildMeshes(nodeAt);
 
     mSec = timer.nsecsElapsed()/1000000.;
     gloParent->showMessage(QString::number(mSec).append(QString("ms used to update %1 (%2) points").arg(count2).arg(count)), 3000);
@@ -278,7 +279,7 @@ void track::newSection(enum secType type, int index)
         if(index == -1)
         {
             temp = lSections.at(lSections.size()-1);
-            startNode = temp->lNodes.at(temp->lNodes.size()-1);
+			startNode = &temp->lNodes[temp->lNodes.size()-1];
         }
         else if(index == 0)
         {
@@ -288,7 +289,7 @@ void track::newSection(enum secType type, int index)
         else
         {
             temp = lSections.at(index-1);
-            startNode = temp->lNodes[temp->lNodes.size()-1];
+			startNode = &temp->lNodes[temp->lNodes.size()-1];
             if(lSections.size() > index)
             {
                 lSections.at(index)->lNodes.removeFirst();
@@ -317,6 +318,9 @@ void track::newSection(enum secType type, int index)
         break;
     case 5:
         newSection = new secbezier(this, startNode);
+        break;
+    case 6:
+        newSection = new secnlcsv(this, startNode);
         break;
     default:
         newSection = NULL;
@@ -356,7 +360,7 @@ void track::newSection(enum secType type, int index)
 int track::exportTrack(fstream *file, float mPerNode, int fromIndex, int toIndex, float fRollThresh)
 {
     QList<int> exportPoints;
-    mnode* anchor = lSections.at(fromIndex)->lNodes[0];
+	mnode* anchor = &lSections.at(fromIndex)->lNodes[0];
     for(int i = fromIndex; i <= toIndex; ++i)
     {
         lSections.at(i)->iFillPointList(exportPoints, mPerNode);
@@ -437,7 +441,7 @@ int track::exportTrack(fstream *file, float mPerNode, int fromIndex, int toIndex
 int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toIndex, float fRollThresh)
 {
     QList<int> exportPoints;
-    mnode* anchor = lSections.at(fromIndex)->lNodes[0];
+	mnode* anchor = &lSections.at(fromIndex)->lNodes[0];
     glm::vec3 anchorPos = anchor->vPosHeart(fHeart);
     for(int i = fromIndex; i <= toIndex; ++i)
     {
@@ -672,7 +676,7 @@ int track::exportTrack2(fstream *file, float mPerNode, int fromIndex, int toInde
 int track::exportTrack3(fstream *file, float mPerNode, int fromIndex, int toIndex, float fRollThresh)
 {
     QList<int> exportPoints;
-    mnode* anchor = lSections.at(fromIndex)->lNodes[0];
+	mnode* anchor = &lSections.at(fromIndex)->lNodes[0];
     for(int i = fromIndex; i <= toIndex; ++i)
     {
         lSections.at(i)->iFillPointList(exportPoints, mPerNode);
@@ -764,7 +768,7 @@ int track::exportTrack3(fstream *file, float mPerNode, int fromIndex, int toInde
 int track::exportTrack4(fstream *file, float mPerNode, int fromIndex, int toIndex, float fRollThresh)
 {
     QList<int> exportPoints;
-    mnode* anchor = lSections.at(fromIndex)->lNodes[0];
+	mnode* anchor = &lSections.at(fromIndex)->lNodes[0];
     for(int i = fromIndex; i <= toIndex; ++i)
     {
         lSections.at(i)->iFillPointList(exportPoints, mPerNode);
@@ -792,7 +796,7 @@ int track::exportTrack4(fstream *file, float mPerNode, int fromIndex, int toInde
 void track::exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toIndex)
 {
     QList<int> exportPoints, rollPoints;
-    mnode* anchor = lSections.at(fromIndex)->lNodes[0];
+	mnode* anchor = &lSections.at(fromIndex)->lNodes[0];
     exportPoints.append(getNumPoints(lSections.at(fromIndex)));
     rollPoints.append(getNumPoints(lSections.at(fromIndex)));
     for(int i = fromIndex; i <= toIndex; ++i)
@@ -1045,7 +1049,7 @@ QString track::loadTrack(fstream& file, trackWidget* _widget)
     povPos.x = readFloat(&file);
     povPos.y = readFloat(&file);
 
-    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + 9.80665f*anchorNode->fPosHearty(0.9*fHeart);
+    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + F_G*anchorNode->fPosHearty(0.9*fHeart);
 
     anchorNode->changePitch(startPitch, false);
     anchorNode->setRoll(anchorNode->fRoll);
@@ -1095,6 +1099,14 @@ QString track::loadTrack(fstream& file, trackWidget* _widget)
         else if(temp == "BEZ")
         {
             _widget->addSection(bezier);
+            //this->newSection(forced);
+            activeSection->loadSection(file);
+            activeSection->updateSection();
+            //gloParent->addForceSec(activeSection);
+        }
+        else if(temp == "CSV")
+        {
+            _widget->addSection(nolimitscsv);
             //this->newSection(forced);
             activeSection->loadSection(file);
             activeSection->updateSection();
@@ -1155,7 +1167,7 @@ QString track::legacyLoadTrack(fstream& file, trackWidget* _widget)
     povPos.x = readFloat(&file);
     povPos.y = readFloat(&file);
 
-    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + 9.80665f*anchorNode->fPosHearty(0.9*fHeart);
+    anchorNode->fEnergy = 0.5f*anchorNode->fVel*anchorNode->fVel + F_G*anchorNode->fPosHearty(0.9*fHeart);
 
     anchorNode->changePitch(startPitch, false);
     anchorNode->setRoll(anchorNode->fRoll);
@@ -1210,6 +1222,14 @@ QString track::legacyLoadTrack(fstream& file, trackWidget* _widget)
             activeSection->updateSection();
             //gloParent->addForceSec(activeSection);
         }
+        else if(temp == "CSV")
+        {
+            _widget->addSection(nolimitscsv);
+            //this->newSection(forced);
+            activeSection->legacyLoadSection(file);
+            activeSection->updateSection();
+            //gloParent->addForceSec(activeSection);
+        }
         else
         {
             return QString("Error while Loading: No Such Segment!");
@@ -1248,10 +1268,10 @@ mnode* track::getPoint(int index)
     }
     if(lSections.size() == i)
     {
-        if(lSections.size())    return lSections.last()->lNodes.last();
+		if(lSections.size())    return &lSections.last()->lNodes.last();
         else return anchorNode;
     }
-    return lSections.at(i)->lNodes[index];
+	return &lSections.at(i)->lNodes[index];
 }
 
 int  track::getIndexFromDist(float dist)

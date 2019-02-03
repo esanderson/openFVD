@@ -3,7 +3,7 @@
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ public:
     virtual void saveSection(std::stringstream& file);
     virtual void loadSection(std::stringstream& file);
     virtual float getMaxArgument();
-    virtual bool isLockable(function* _func);
-    virtual bool isInFunction(int index, subfunction* func);
+    virtual bool isLockable(func* _func);
+    virtual bool isInFunction(int index, subfunc* func);
 };
 
 #endif // SECFORCED_H

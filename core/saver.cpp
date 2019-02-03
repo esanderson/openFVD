@@ -1,6 +1,6 @@
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
-#    Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+#    Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ saver::saver(const QString& fileName, projectWidget* _project, QMainWindow* _par
 QString saver::doSave()
 {
     fstream fout(sFileName.toLocal8Bit().data(), ios::out | ios::binary);
-    if(fout == NULL) {
+    if(!fout) {
         return QString("Error: File is NULL");
     }
 
@@ -46,7 +46,7 @@ QString saver::doSave()
 QString saver::doLoad()
 {
     fstream fin(sFileName.toLocal8Bit().data(), ios::in | ios::binary);
-    if(fin == NULL) {
+    if(!fin) {
         return QString("Error: File is NULL");
     }
 

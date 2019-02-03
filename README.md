@@ -1,8 +1,8 @@
 ####################
-# open FVD++ v0.77 #
+# open FVD++ v0.79 #
 ####################
 
-Stephan (Lenny) Alt, 2012-2013, alt.stephan@web.de
+Stephan (Lenny) Alt, 2012-2016, alt.stephan@web.de
 
 #########
 # Intro #
@@ -15,6 +15,18 @@ That said the tool is still development and I take no warranty of its usefulness
 #############
 # Changelog #
 #############
+
+v0.79:
+- added nolimits 2 csv import
+- fixed renderer bugs when importing nl1 track or nl2 csv files on osx
+- fixed compilation errors on clang
+- reverted performance improvements due to fatal bugs
+
+v0.78:
+- fixed export of straight sections with non zero roll transitions
+- fixed camera stuttering
+- fixed distance based forced sections
+- first 64bit Release
 
 v0.77 (open Source release):
 - fixed export of individual sections
@@ -145,8 +157,8 @@ If the program crashed try to recreate the crash scenario and describe how you g
 # License information #
 #######################
 
-FVD++, an advanced coaster design tool for NoLimits
-Copyright (C) 2012-2014, Stephan "Lenny" Alt <alt.stephan@web.de>
+FVD++, an advanced coaster design tool for NoLimits and NoLimits2
+Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
