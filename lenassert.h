@@ -35,8 +35,8 @@
 #define F_G (9.80665f)
 
 #define GLM_FORCE_RADIANS
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
+#include "glm.hpp"
+#include "ext.hpp"
 
 #ifdef QT_NO_DEBUG
     #define lenAssert(c) if(!(c)) qCritical("Assertion '%s' in %s line %d failed.", #c, __FILE__, __LINE__);

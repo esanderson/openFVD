@@ -1,8 +1,12 @@
+# Make file
+
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
+*.tlog
 
 # Precompiled Headers
 *.gch
@@ -34,3 +38,31 @@
 # QT Crap
 *.pro.user
 *.user
+
+# VS Code
+.vscode/
+
+# Libraries
+bin/en_visual_studio_express_2012_for_windows_desktop_x86_dvd_1001986.iso
+lib/
+
+# Output folders
+debug/
+release/
+Makefile
+Makefile.Debug
+Makefile.Release
+
+# UI auto-generated headers
+ui_conversionpanel.h
+ui_exportui.h
+ui_graphwidget.h
+ui_importui.h
+ui_mainwindow.h
+ui_objectexporter.h
+ui_optionsmenu.h
+ui_projectwidget.h
+ui_smoothui.h
+ui_trackproperties.h
+ui_trackwidget.h
+ui_transitionwidget.h
