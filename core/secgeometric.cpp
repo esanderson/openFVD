@@ -399,96 +399,57 @@ float secgeometric::getMaxArgument()
     return min;
 }
 
-void secgeometric::saveSection(std::fstream& file)
+void secgeometric::saveSection(iostream& stream)
 {
-    file << "GEO";
-    writeBytes(&file, (const char*)&bSpeed, sizeof(bool));
+    stream << "GEO";
+    writeBytes(&stream, (const char*)&bSpeed, sizeof(bool));
 
     int namelength = sName.length();
-    std::string name = sName.toStdString();
+    string name = sName.toStdString();
 
-    writeBytes(&file, (const char*)&namelength, sizeof(int));
-    file << name;
+    writeBytes(&stream, (const char*)&namelength, sizeof(int));
+    stream << name;
 
-    writeBytes(&file, (const char*)&fVel, sizeof(float));
-    writeBytes(&file, (const char*)&iTime, sizeof(int));
-    writeBytes(&file, (const char*)&bOrientation, sizeof(bool));
-    writeBytes(&file, (const char*)&bArgument, sizeof(bool));
-    rollFunc->saveFunction(file);
-    normForce->saveFunction(file);
-    latForce->saveFunction(file);
+    writeBytes(&stream, (const char*)&fVel, sizeof(float));
+    writeBytes(&stream, (const char*)&iTime, sizeof(int));
+    writeBytes(&stream, (const char*)&bOrientation, sizeof(bool));
+    writeBytes(&stream, (const char*)&bArgument, sizeof(bool));
+    rollFunc->saveFunction(stream);
+    normForce->saveFunction(stream);
+    latForce->saveFunction(stream);
 }
 
-void secgeometric::loadSection(std::fstream& file)
+void secgeometric::loadSection(iostream& stream)
 {
-    bSpeed = readBool(&file);
+    bSpeed = readBool(&stream);
 
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    sName = QString(readString(&stream, namelength).c_str());
 
-
-    fVel = readFloat(&file);
-    iTime = readInt(&file);
-    bOrientation = readBool(&file);
-    bArgument = readBool(&file);
-    rollFunc->loadFunction(file);
-    normForce->loadFunction(file);
-    latForce->loadFunction(file);
+    fVel = readFloat(&stream);
+    iTime = readInt(&stream);
+    bOrientation = readBool(&stream);
+    bArgument = readBool(&stream);
+    rollFunc->loadFunction(stream);
+    normForce->loadFunction(stream);
+    latForce->loadFunction(stream);
 }
 
-
-void secgeometric::legacyLoadSection(std::fstream& file)
+void secgeometric::legacyLoadSection(iostream& stream)
 {
-    bSpeed = readBool(&file);
+    bSpeed = readBool(&stream);
 
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
-
-
-    fVel = readFloat(&file);
-    iTime = readInt(&file);
-    bOrientation = readBool(&file);
-    bArgument = readBool(&file);
-    rollFunc->legacyLoadFunction(file);
-    normForce->legacyLoadFunction(file);
-    latForce->legacyLoadFunction(file);
-}
-
-void secgeometric::saveSection(std::stringstream& file)
-{
-    file << "GEO";
-    writeBytes(&file, (const char*)&bSpeed, sizeof(bool));
-
-    int namelength = sName.length();
-    std::string name = sName.toStdString();
-
-    writeBytes(&file, (const char*)&namelength, sizeof(int));
-    file << name;
-
-    writeBytes(&file, (const char*)&fVel, sizeof(float));
-    writeBytes(&file, (const char*)&iTime, sizeof(int));
-    writeBytes(&file, (const char*)&bOrientation, sizeof(bool));
-    writeBytes(&file, (const char*)&bArgument, sizeof(bool));
-    rollFunc->saveFunction(file);
-    normForce->saveFunction(file);
-    latForce->saveFunction(file);
-}
-
-void secgeometric::loadSection(std::stringstream& file)
-{
-    bSpeed = readBool(&file);
-
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    sName = QString(readString(&stream, namelength).c_str());
 
 
-    fVel = readFloat(&file);
-    iTime = readInt(&file);
-    bOrientation = readBool(&file);
-    bArgument = readBool(&file);
-    rollFunc->loadFunction(file);
-    normForce->loadFunction(file);
-    latForce->loadFunction(file);
+    fVel = readFloat(&stream);
+    iTime = readInt(&stream);
+    bOrientation = readBool(&stream);
+    bArgument = readBool(&stream);
+    rollFunc->legacyLoadFunction(stream);
+    normForce->legacyLoadFunction(stream);
+    latForce->legacyLoadFunction(stream);
 }
 
 bool secgeometric::isInFunction(int index, subfunc* func)

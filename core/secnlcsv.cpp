@@ -128,95 +128,56 @@ mnode secnlcsv::getNodeAtDistance(float distance) {
     return resultNode;
 }
 
-void secnlcsv::saveSection(fstream &file)
+void secnlcsv::saveSection(iostream& stream)
 {
     int size = csvNodes.size();
 
-    file << "CSV";
+    stream << "CSV";
 
-    writeBytes(&file, (const char*)&size, sizeof(int));
+    writeBytes(&stream, (const char*)&size, sizeof(int));
 
     for(int i=0; i < csvNodes.size(); i++) {
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.z, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vPos.x, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vPos.y, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vPos.z, sizeof(float));
 
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.z, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vDir.x, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vDir.y, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vDir.z, sizeof(float));
 
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.z, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vLat.x, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vLat.y, sizeof(float));
+        writeBytes(&stream, (const char*)&csvNodes[i].vLat.z, sizeof(float));
     }
 }
 
-void secnlcsv::loadSection(fstream &file)
+void secnlcsv::loadSection(iostream& stream)
 {
     csvNodes.clear();
 
-    int size = readInt(&file);
+    int size = readInt(&stream);
 
     for(int i=0; i < size; i++) {
         mnode node;
-        node.vPos = readVec3(&file);
-        node.vDir = readVec3(&file);
-        node.vLat = readVec3(&file);
+        node.vPos = readVec3(&stream);
+        node.vDir = readVec3(&stream);
+        node.vLat = readVec3(&stream);
 
         csvNodes.append(node);
     }
 }
 
-void secnlcsv::legacyLoadSection(fstream &file)
+void secnlcsv::legacyLoadSection(iostream& stream)
 {
     csvNodes.clear();
 
-    int size = readInt(&file);
+    int size = readInt(&stream);
 
     for(int i=0; i < size; i++) {
         mnode node;
-        node.vPos = readVec3(&file);
-        node.vDir = readVec3(&file);
-        node.vLat = readVec3(&file);
-
-        csvNodes.append(node);
-    }
-}
-
-void secnlcsv::saveSection(stringstream &file)
-{
-    int size = csvNodes.size();
-
-    file << "CSV";
-
-    writeBytes(&file, (const char*)&size, sizeof(int));
-
-    for(int i=0; i < csvNodes.size(); i++) {
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vPos.z, sizeof(float));
-
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vDir.z, sizeof(float));
-
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.x, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.y, sizeof(float));
-        writeBytes(&file, (const char*)&csvNodes[i].vLat.z, sizeof(float));
-    }
-}
-
-void secnlcsv::loadSection(stringstream &file)
-{
-    csvNodes.clear();
-
-    int size = readInt(&file);
-
-    for(int i=0; i < size; i++) {
-        mnode node;
-        node.vPos = readVec3(&file);
-        node.vDir = readVec3(&file);
-        node.vLat = readVec3(&file);
+        node.vPos = readVec3(&stream);
+        node.vDir = readVec3(&stream);
+        node.vLat = readVec3(&stream);
 
         csvNodes.append(node);
     }
@@ -242,18 +203,18 @@ bool secnlcsv::isInFunction(int index, subfunc* func)
 
 void secnlcsv::loadTrack(QString filename)
 {
-    QFile file(filename);
+    QFile stream(filename);
 
     csvNodes.clear();
 
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!stream.open(QIODevice::ReadOnly)) {
         return ;
     }
 
     int lineCount=0;
 
-    while (!file.atEnd()) {
-        QByteArray line = file.readLine();
+    while (!stream.atEnd()) {
+        QByteArray line = stream.readLine();
 
         if(lineCount) {
             QList<QByteArray> lineSplitted = line.split('\t');

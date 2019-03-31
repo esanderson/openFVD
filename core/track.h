@@ -19,6 +19,10 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
+
+#include <QList>
+#include <QString>
 #include "mnode.h"
 #include "secstraight.h"
 #include "seccurved.h"
@@ -27,12 +31,8 @@
 #include "secbezier.h"
 #include "secnlcsv.h"
 #include "sectionhandler.h"
-#include <QList>
-#include <fstream>
-#include <QString>
 
 class optionsMenu;
-class sectionHandler;
 class trackWidget;
 class smoothUi;
 class smoothHandler;
@@ -75,6 +75,7 @@ public:
     QString saveTrack(std::fstream& file, trackWidget* _widget);
     QString loadTrack(std::fstream& file, trackWidget* _widget);
     QString legacyLoadTrack(std::fstream& file, trackWidget* _widget);
+    
     mnode* getPoint(int index);
     int getIndexFromDist(float dist);
     int getNumPoints(section* until = NULL);

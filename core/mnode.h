@@ -19,59 +19,50 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QList>
-#include <sstream>
 #include <fstream>
+
+#include <QList>
 #include "lenassert.h"
+#include "bezierdata.h"
 
 #define F_HZ (1000.f)
 
-typedef struct bezier_s
-{
-    glm::vec3 Kp1;
-    glm::vec3 Kp2;
-    glm::vec3 P1;
-    float roll;
-    bool contRoll;
-    bool equalDist;
-    bool relRoll;
-
-    float ptf;
-    float fvdRoll;
-    float length;
-    int numNodes;
-    float fVel;
-} bezier_t;
+using namespace std;
 
 class mnode
 {
 public:
     mnode();
     mnode(glm::vec3 getPos, glm::vec3 getDir, float getRoll, float getVel, float getNForce, float getLateral);
+
     void setRoll(float dRoll);
     void updateRoll();
+
     void updateNorm() { vNorm = glm::cross(vDir, vLat); }
+
     void changePitch(float dAngle, bool inverted);
     void changeYaw(float dAngle);
+
     float getPitchChange() { return fPitchFromLast*F_HZ; }
     float getYawChange() { return fYawFromLast*F_HZ; }
+
     float fPosHeartx(float fHeart) { return vPos.x+vNorm.x*fHeart; }
     float fPosHearty(float fHeart) { return vPos.y+vNorm.y*fHeart; }
     float fPosHeartz(float fHeart) { return vPos.z+vNorm.z*fHeart; }
+
     glm::vec3 vLatHeart(float fHeart);
     glm::vec3 vDirHeart(float fHeart);
     glm::vec3 vPosHeart(float fHeart) { return vPos + fHeart*vNorm; }
 
     glm::vec3 vRelPos(float y, float x, float z = 0.f) { return vPos - y*vNorm + x*vLatHeart(-y) + z*vDirHeart(-y); }
 
-    void exportNode(QList<bezier_t*> &bezList, mnode* last, mnode* mid, mnode* anchor, float fHeart, float fRollThresh);
+    void exportNode(QList<BezierData*> &bezList, mnode* last, mnode* mid, mnode* anchor, float fHeart, float fRollThresh);
 
     float getPitch() { return glm::atan(vDir.y, glm::sqrt(vDir.x*vDir.x+vDir.z*vDir.z))*180/F_PI; }
     float getDirection() { return glm::atan(-vDir.x, -vDir.z)*180/F_PI; }
 
-
-    void saveNode(std::fstream& file);
-    void legacyLoadNode(std::fstream& file);
+    void saveNode(iostream& stream);
+    void legacyLoadNode(iostream& stream);
 
     void calcSmoothForces();
 

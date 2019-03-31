@@ -21,9 +21,9 @@
 
 #include <iostream>
 
-class QTreeWidgetItem;
-class track;
-class section;
+#include <QTreeWidgetItem>
+#include "track.h"
+#include "section.h"
 
 class smoothHandler
 {
@@ -48,9 +48,9 @@ public:
     void setLength(int _arg);
     void setIterations(int _arg);
 
-    void saveSmooth(std::fstream& file);
-    void loadSmooth(std::fstream& file);
-    void legacyLoadSmooth(std::fstream& file);
+    void saveSmooth(iostream& stream);
+    void loadSmooth(iostream& stream);
+    void legacyLoadSmooth(iostream& stream);
 
     bool active;
 

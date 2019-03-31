@@ -19,12 +19,10 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QMainWindow>
+#include <QString>
 #include "projectwidget.h"
 #include "track.h"
-#include <QString>
-
-class projectWidget;
-class QMainWindow;
 
 class saver
 {

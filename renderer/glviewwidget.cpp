@@ -31,7 +31,6 @@
 #include "osx/common.h"
 #include <string>
 
-
 #define FFAR (4000.f)
 #define FNEAR (0.1f)
 #define FOV (90)
@@ -1146,7 +1145,7 @@ void glViewWidget::initTextures()
 		{
 			//float col = std::min(fabs(i-RASTER_SIZE/2.f), fabs(j-RASTER_SIZE/2.f))/(RASTER_SIZE/2.f);
 			double major = std::min(fabs(i-RASTER_SIZE/2.f), fabs(j-RASTER_SIZE/2.f))/(RASTER_SIZE/2.f);
-			double minor = std::min(std::min(fabs(((i+(RASTER_SIZE/20))%(RASTER_SIZE/10)-(RASTER_SIZE/20.f))), fabs(((j+(RASTER_SIZE/20))%(RASTER_SIZE/10)-(RASTER_SIZE/20.f)))), 1.);
+			double minor = std::min(std::min(fabs(((i+(RASTER_SIZE/20))%(RASTER_SIZE/10)-(RASTER_SIZE/20.f))), fabs(((j+(RASTER_SIZE/20))%(RASTER_SIZE/10)-(RASTER_SIZE/20.f)))), 1.f);
 			major = 1-major;
 			minor = 1-minor;
 			for(int k = 0; k < 9; ++k)

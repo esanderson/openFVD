@@ -1,20 +1,15 @@
-####################
-# open FVD++ v0.79 #
-####################
+
+# open FVD++ v0.79
 
 Stephan (Lenny) Alt, 2012-2016, alt.stephan@web.de
 
-#########
-# Intro #
-#########
+# Intro
 
 Welcome to FVD++, a next generation FVD tool inspired by newton2 (by Keith (Entropy) Cohn).
 It is mainly aimed for coaster enthusiasts creating sophisticated force and geometry based coasters.
 That said the tool is still development and I take no warranty of its usefulness in its current state (see License information below).
 
-#############
-# Changelog #
-#############
+# Changelog
 
 v0.79:
 - added nolimits 2 csv import
@@ -127,35 +122,27 @@ v0.1 Alpha:
 - OpenGL shaders visualising important data (like forces, roll speed and track flexion).
 - PoV mode enabling the ability to check the track inside FVD++
 
-###################
-# Having Trouble? #
-###################
+# Having Trouble?
 
-#### I can't use visualizations ####
+## I can't use visualizations
 - The visualizations use OpenGL 3.1 shader technology, make sure your graphics card / drivers support OpenGL 3.1
 
-#### I don't know how to do XY ####
+## I don't know how to do XY
 - read through the official documentation, this document should explain nearly every feature of FVD++
 - Visit the FVD++ Thread on NoLimitsExchange (http://forum.nolimits-exchange.com/)
 
-#######################
-# Found a Bug / Crash #
-#######################
+# Found a Bug / Crash
 
 Please let me know if you found a bug / crash either by posting in the NLE forum or by mailing me (alt.stephan@web.de).
 Please include as much information as possible, try to save the track that bugged out and send me the saved .fvd file.
 If the program crashed try to recreate the crash scenario and describe how you got the program to crash in a detailed way.
 
-#############
-# Thanks to #
-#############
+# Thanks to
 
 - Lucas van den Bosch for creating the official documentation and youtube tutorial channel
 - Ercan "geforcefan" Akyürek for deploying and testing the tool on Mac systems
- 
-#######################
-# License information #
-#######################
+
+# License information
 
 FVD++, an advanced coaster design tool for NoLimits and NoLimits2
 Copyright (C) 2012-2015, Stephan "Lenny" Alt <alt.stephan@web.de>
@@ -173,9 +160,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#######################
-# Building the source #
-#######################
+# Building the source
 
 1. Download and install [qt-opensource-windows-x86-msvc2012_64_opengl-5.2.1.exe](http://download.qt.io/archive/qt/5.2/5.2.1/) and or [qt-opensource-windows-x86-mingw48_opengl-5.2.1.exe](http://download.qt.io/archive/qt/5.2/5.2.1/)
   1. If building with msvc, install Visual Studio 2012 (express is fine: [Visual Studio 2012 Express](http://www.microsoft.com/en-us/download/details.aspx?id=34673) (download the iso version))
@@ -189,3 +174,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
   1. Download [Version 2.0.0 RC1](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/lib3ds/lib3ds-20080909.zip) to application directory
   1. Unzip into application directory (/lib/lib3ds-20080909)
 1. Open fvd.pro with QT Creator and click "Build project fvd"
+
+# TODO
+
+- Rename save and load methods to just "save" and "load"
+- Add relative path to header includes and include just the source directories and not their sub-directories
+- Fix the case of classes and variable names
+- Move members to private
+- Convert build to Gradle

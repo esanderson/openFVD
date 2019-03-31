@@ -45,7 +45,7 @@ bool noLimitsImporter::importAsNlTrack()
 
     int length = fin.tellg();
     string temp;
-    QList<bezier_t*> *bList = &inTrack->trackData->activeSection->bezList;
+    QList<BezierData*> *bList = &inTrack->trackData->activeSection->bezList;
 
     QList<glm::vec3> *lineList = &inTrack->trackData->activeSection->supList;
 
@@ -116,7 +116,7 @@ bool noLimitsImporter::importAsNlTrack()
             bezCount = readInt(&fin);
             for(int b = 0; b < bezCount; ++b)
             {
-                bList->append(new bezier_t);
+                bList->append(new BezierData);
                 bList->at(b)->P1.x = readFloat(&fin);
                 bList->at(b)->P1.y = readFloat(&fin);
                 bList->at(b)->P1.z = readFloat(&fin);
@@ -214,7 +214,7 @@ bool noLimitsImporter::importAsNlTrack()
 
     if(closeTrack)
     {
-        bList->append(new bezier_t);
+        bList->append(new BezierData);
         bList->last()->P1 = bList->at(0)->P1;
         bList->last()->Kp1 = bList->at(0)->Kp1;
         bList->last()->Kp2 = bList->at(0)->Kp2;
@@ -244,7 +244,7 @@ bool noLimitsImporter::importAsTxt()
 
     fin.seekg (0, ios::end);
 
-    QList<bezier_t*> *bList = &inTrack->trackData->activeSection->bezList;
+    QList<BezierData*> *bList = &inTrack->trackData->activeSection->bezList;
 
     fin.seekg(0);
 
@@ -256,7 +256,7 @@ bool noLimitsImporter::importAsTxt()
         fin >> z;
         fin >> x;
         fin >> y;
-        bList->append(new bezier_t);
+        bList->append(new BezierData);
         bList->at(b)->P1.x = x;
         bList->at(b)->P1.y = y;
         bList->at(b)->P1.z = z;

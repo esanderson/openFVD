@@ -16,17 +16,14 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "section.h"
-#include "exportfuncs.h"
 #include <cmath>
 
 #include <QDebug>
+#include "section.h"
+#include "exportfuncs.h"
 #include "track.h"
 
-
 #define RELTHRESH 1.0f
-
-using namespace std;
 
 section::section(track* getParent, enum secType _type, mnode* first)
 {
@@ -55,7 +52,7 @@ section::~section()
     }
 }
 
-int section::exportSection(fstream *file, mnode* anchor, float mPerNode, float fHeart, glm::vec3& vHeartLat, glm::vec3& Norm, float fRollThresh)
+int section::exportSection(iostream *stream, mnode* anchor, float mPerNode, float fHeart, glm::vec3& vHeartLat, glm::vec3& Norm, float fRollThresh)
 {
     Q_UNUSED(vHeartLat);
     Q_UNUSED(Norm);
@@ -109,25 +106,25 @@ int section::exportSection(fstream *file, mnode* anchor, float mPerNode, float f
 
 			KP1 = anchorBase*(glm::vec4(glm::vec3(lNodes[lasti].vPosHeart(fHeart) + fThreshold/SCALING * lNodes[lasti].vDirHeart(fHeart)), 1.f));
 
-            writeBytes(file, (const char*)&KP1.x, 4);
-            writeBytes(file, (const char*)&KP1.y, 4);
-            writeBytes(file, (const char*)&KP1.z, 4);
+            writeBytes(stream, (const char*)&KP1.x, 4);
+            writeBytes(stream, (const char*)&KP1.y, 4);
+            writeBytes(stream, (const char*)&KP1.z, 4);
 
 
 			//fRollSpeedPerMeter = lNodes[(i)->fDistFromLast > 0.f ? lNodes[(i)].fRollSpeed/F_HZ/lNodes.at(i)]-fDistFromLast : 0.f;
 			KP2 = anchorBase*(glm::vec4(glm::vec3(lNodes[i].vPosHeart(fHeart) - fThreshold/SCALING * lNodes[i].vDirHeart(fHeart)), 1.f));
 
 
-            writeBytes(file, (const char*)&KP2.x, 4);
-            writeBytes(file, (const char*)&KP2.y, 4);
-            writeBytes(file, (const char*)&KP2.z, 4);
+            writeBytes(stream, (const char*)&KP2.x, 4);
+            writeBytes(stream, (const char*)&KP2.y, 4);
+            writeBytes(stream, (const char*)&KP2.z, 4);
 
 
 			P1 = anchorBase*(glm::vec4(glm::vec3(lNodes[i].vPosHeart(fHeart)), 1.f));
 
-            writeBytes(file, (const char*)&P1.x, 4);
-            writeBytes(file, (const char*)&P1.y, 4);
-            writeBytes(file, (const char*)&P1.z, 4);
+            writeBytes(stream, (const char*)&P1.x, 4);
+            writeBytes(stream, (const char*)&P1.y, 4);
+            writeBytes(stream, (const char*)&P1.z, 4);
 
             if(fabs(V.y) < fRollThresh) {
 				temp = glm::atan(lNodes[i].vLatHeart(fHeart).y, -lNodes[i].vNorm.y);
@@ -140,17 +137,17 @@ int section::exportSection(fstream *file, mnode* anchor, float mPerNode, float f
                 }
             }
 
-            writeBytes(file, (const char*)&temp, 4);
+            writeBytes(stream, (const char*)&temp, 4);
 
             char cTemp;
 
             cTemp = 0xFF;
-            writeBytes(file, &cTemp, 1); // CONT ROLL
+            writeBytes(stream, &cTemp, 1); // CONT ROLL
             cTemp = fabs(V.y) < fRollThresh ? 0x00 : 0xff;
-            writeBytes(file, &cTemp, 1); // REL ROLL
+            writeBytes(stream, &cTemp, 1); // REL ROLL
             cTemp = 0x00;
-            writeBytes(file, &cTemp, 1); // equalDistanceCP
-            writeNulls(file, 7);
+            writeBytes(stream, &cTemp, 1); // equalDistanceCP
+            writeNulls(stream, 7);
 
             count++;
             fThreshold -= this->length/numNodes;

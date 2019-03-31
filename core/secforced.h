@@ -27,13 +27,14 @@ class secforced : public section
 public:
     ~secforced();
     secforced(track* getParent, mnode* first, float getlength = 10.0);
+
     virtual int updateSection(int node = 0);
     int updateDistanceSection(int node = 0);
-    virtual void saveSection(std::fstream& file);
-    virtual void loadSection(std::fstream& file);
-    virtual void legacyLoadSection(std::fstream& file);
-    virtual void saveSection(std::stringstream& file);
-    virtual void loadSection(std::stringstream& file);
+
+    virtual void saveSection(iostream& stream);
+    virtual void loadSection(iostream& stream);
+    virtual void legacyLoadSection(iostream& stream);
+
     virtual float getMaxArgument();
     virtual bool isLockable(func* _func);
     virtual bool isInFunction(int index, subfunc* func);

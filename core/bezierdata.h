@@ -1,5 +1,5 @@
-#ifndef SECTIONHANDLER_H
-#define SECTIONHANDLER_H
+#ifndef BEZIER_DATA_H
+#define BEZIER_DATA_H
 
 /*
 #    FVD++, an advanced coaster design tool for NoLimits
@@ -19,23 +19,23 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QTreeWidgetItem>
-#include "section.h"
-#include "track.h"
+#include "glm.hpp"
 
-class sectionHandler
+struct BezierData
 {
-public:
-    sectionHandler(track* _track, enum secType _type, int _id);
-    ~sectionHandler();
-    void updateID(int _id);
+    glm::vec3 Kp1;
+    glm::vec3 Kp2;
+    glm::vec3 P1;
+    float roll;
+    bool contRoll;
+    bool equalDist;
+    bool relRoll;
 
-    enum secType type;
-    QTreeWidgetItem* listItem;
-    section* sectionData;
-
-private:
-    int id;
+    float ptf;
+    float fvdRoll;
+    float length;
+    int numNodes;
+    float fVel;
 };
 
-#endif // SECTIONHANDLER_H
+#endif // BEZIER_DATA_H

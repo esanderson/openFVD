@@ -159,50 +159,50 @@ void smoothHandler::setIterations(int _arg)
     treeItem->setText(5, QString::number(iterations));
 }
 
-void smoothHandler::saveSmooth(std::fstream& file)
+void smoothHandler::saveSmooth(iostream& stream)
 {
     QString name = treeItem->text(1);
     int namelength = name.length();
     std::string stdName = name.toStdString();
 
-    writeBytes(&file, (const char*)&namelength, sizeof(int));
-    file << stdName;
+    writeBytes(&stream, (const char*)&namelength, sizeof(int));
+    stream << stdName;
 
-    writeBytes(&file, (const char*)&fromNode, sizeof(int));
-    writeBytes(&file, (const char*)&toNode, sizeof(int));
-    writeBytes(&file, (const char*)&length, sizeof(int));
-    writeBytes(&file, (const char*)&iterations, sizeof(int));
-    writeBytes(&file, (const char*)&active, sizeof(bool));
+    writeBytes(&stream, (const char*)&fromNode, sizeof(int));
+    writeBytes(&stream, (const char*)&toNode, sizeof(int));
+    writeBytes(&stream, (const char*)&length, sizeof(int));
+    writeBytes(&stream, (const char*)&iterations, sizeof(int));
+    writeBytes(&stream, (const char*)&active, sizeof(bool));
 }
 
-void smoothHandler::loadSmooth(std::fstream &file)
+void smoothHandler::loadSmooth(iostream &stream)
 {
-    int namelength = readInt(&file);
-    QString name = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    QString name = QString(readString(&stream, namelength).c_str());
 
     treeItem->setText(1, name);
 
-    setFrom(readInt(&file));
-    setTo(readInt(&file));
-    setLength(readInt(&file));
-    setIterations(readInt(&file));
-    active = readBool(&file);
+    setFrom(readInt(&stream));
+    setTo(readInt(&stream));
+    setLength(readInt(&stream));
+    setIterations(readInt(&stream));
+    active = readBool(&stream);
 
     update();
 }
 
-void smoothHandler::legacyLoadSmooth(std::fstream &file)
+void smoothHandler::legacyLoadSmooth(iostream &stream)
 {
-    int namelength = readInt(&file);
-    QString name = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    QString name = QString(readString(&stream, namelength).c_str());
 
     treeItem->setText(1, name);
 
-    setFrom(readInt(&file));
-    setTo(readInt(&file));
-    setLength(readInt(&file));
-    setIterations(readInt(&file));
-    active = readBool(&file);
+    setFrom(readInt(&stream));
+    setTo(readInt(&stream));
+    setLength(readInt(&stream));
+    setIterations(readInt(&stream));
+    active = readBool(&stream);
 
     update();
 }

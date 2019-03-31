@@ -148,65 +148,41 @@ float func::changeLength(float newlength, int index)
     return getMaxArgument();
 }
 
-void func::saveFunction(std::fstream& file)
+void func::saveFunction(iostream& stream)
 {
-    file << "FUNC";
+    stream << "FUNC";
     int size = funcList.size();
-    writeBytes(&file, (const char*)&size, sizeof(int));
-    for(int i = 0; i < funcList.size(); ++i) {
-        funcList[i]->saveSubFunc(file);
+    writeBytes(&stream, (const char*)&size, sizeof(int));
+    for (int i = 0; i < funcList.size(); ++i) {
+        funcList[i]->saveSubFunc(stream);
     }
 }
 
-void func::loadFunction(std::fstream& file)
+void func::loadFunction(iostream& stream)
 {
-    if(readString(&file, 4) != "FUNC") {
+    if (readString(&stream, 4) != "FUNC") {
         lenAssert(0 && "Error Loading Function");
         return;
     }
-    int size = readInt(&file);
-    funcList[0]->loadSubFunc(file);
+    int size = readInt(&stream);
+    funcList[0]->loadSubFunc(stream);
     for(int i = 1; i < size; ++i) {
         appendSubFunction(1, i-1);
-        funcList[i]->loadSubFunc(file);
+        funcList[i]->loadSubFunc(stream);
     }
 }
 
-void func::legacyLoadFunction(std::fstream& file)
+void func::legacyLoadFunction(iostream& stream)
 {
-    if(readString(&file, 4) != "FUNC") {
+    if (readString(&stream, 4) != "FUNC") {
         lenAssert(0 && "Error Loading Function");
         return;
     }
-    int size = readInt(&file);
-    funcList[0]->legacyLoadSubFunc(file);
-    for(int i = 1; i < size; ++i) {
+    int size = readInt(&stream);
+    funcList[0]->legacyLoadSubFunc(stream);
+    for (int i = 1; i < size; ++i) {
         appendSubFunction(1, i-1);
-        funcList[i]->legacyLoadSubFunc(file);
-    }
-}
-
-void func::saveFunction(std::stringstream& file)
-{
-    file << "FUNC";
-    int size = funcList.size();
-    writeBytes(&file, (const char*)&size, sizeof(int));
-    for(int i = 0; i < funcList.size(); ++i) {
-        funcList[i]->saveSubFunc(file);
-    }
-}
-
-void func::loadFunction(std::stringstream& file)
-{
-    if(readString(&file, 4) != "FUNC") {
-        lenAssert(0 && "Error Loading Function");
-        return;
-    }
-    int size = readInt(&file);
-    funcList[0]->loadSubFunc(file);
-    for(int i = 1; i < size; ++i) {
-        appendSubFunction(1, i-1);
-        funcList[i]->loadSubFunc(file);
+        funcList[i]->legacyLoadSubFunc(stream);
     }
 }
 

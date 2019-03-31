@@ -133,75 +133,45 @@ float secstraight::getMaxArgument()
     return rollFunc->getMaxArgument();
 }
 
-void secstraight::saveSection(std::fstream& file)
+void secstraight::saveSection(iostream& stream)
 {
-    file << "STR";
-    writeBytes(&file, (const char*)&bSpeed, sizeof(bool));
+    stream << "STR";
+    writeBytes(&stream, (const char*)&bSpeed, sizeof(bool));
 
     int namelength = sName.length();
     std::string name = sName.toStdString();
 
-    writeBytes(&file, (const char*)&namelength, sizeof(int));
-    file << name;
+    writeBytes(&stream, (const char*)&namelength, sizeof(int));
+    stream << name;
 
-    writeBytes(&file, (const char*)&fVel, sizeof(float));
-    writeBytes(&file, (const char*)&fHLength, sizeof(float));
-    rollFunc->saveFunction(file);
+    writeBytes(&stream, (const char*)&fVel, sizeof(float));
+    writeBytes(&stream, (const char*)&fHLength, sizeof(float));
+    rollFunc->saveFunction(stream);
 }
 
-void secstraight::loadSection(std::fstream& file)
+void secstraight::loadSection(iostream& stream)
 {
-    bSpeed = readBool(&file);
+    bSpeed = readBool(&stream);
 
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    sName = QString(readString(&stream, namelength).c_str());
 
-
-    fVel = readFloat(&file);
-    fHLength = readFloat(&file);
-    rollFunc->loadFunction(file);
+    fVel = readFloat(&stream);
+    fHLength = readFloat(&stream);
+    rollFunc->loadFunction(stream);
 }
 
-void secstraight::legacyLoadSection(std::fstream& file)
+void secstraight::legacyLoadSection(iostream& stream)
 {
-    bSpeed = readBool(&file);
+    bSpeed = readBool(&stream);
 
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
-
-
-    fVel = readFloat(&file);
-    fHLength = readFloat(&file);
-    rollFunc->legacyLoadFunction(file);
-}
-
-void secstraight::saveSection(std::stringstream& file)
-{
-    file << "STR";
-    writeBytes(&file, (const char*)&bSpeed, sizeof(bool));
-
-    int namelength = sName.length();
-    std::string name = sName.toStdString();
-
-    writeBytes(&file, (const char*)&namelength, sizeof(int));
-    file << name;
-
-    writeBytes(&file, (const char*)&fVel, sizeof(float));
-    writeBytes(&file, (const char*)&fHLength, sizeof(float));
-    rollFunc->saveFunction(file);
-}
-
-void secstraight::loadSection(std::stringstream& file)
-{
-    bSpeed = readBool(&file);
-
-    int namelength = readInt(&file);
-    sName = QString(readString(&file, namelength).c_str());
+    int namelength = readInt(&stream);
+    sName = QString(readString(&stream, namelength).c_str());
 
 
-    fVel = readFloat(&file);
-    fHLength = readFloat(&file);
-    rollFunc->loadFunction(file);
+    fVel = readFloat(&stream);
+    fHLength = readFloat(&stream);
+    rollFunc->legacyLoadFunction(stream);
 }
 
 bool secstraight::isInFunction(int index, subfunc* func)

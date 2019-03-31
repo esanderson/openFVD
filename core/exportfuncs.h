@@ -19,49 +19,24 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include <fstream>
-#include <sstream>
-#include "mnode.h"
 
-void writeBytes(std::fstream *file, const char* data, size_t length );
+#include <QList>
+#include "bezierdata.h"
 
-void writeNulls(std::fstream *file , size_t length );
+using namespace std;
 
-std::string readString(std::fstream *file, size_t length);
+void writeBytes(iostream *stream, const char* data, size_t length);
+void writeNulls(iostream *stream , size_t length);
 
-bool readNulls(std::fstream *file, size_t length);
+void readBytes(iostream *stream, void* _ptr, size_t length);
+bool readNulls(iostream *stream, size_t length);
+bool readBool(iostream *stream);
+int readInt(iostream *stream);
+float readFloat(iostream *stream);
+string readString(iostream *stream, size_t length);
+glm::vec3 readVec3(iostream *stream);
 
-glm::vec3 readVec3(std::fstream *file);
-
-float readFloat(std::fstream *file);
-
-int readInt(std::fstream *file);
-
-bool readBool(std::fstream *file);
-
-void readBytes(std::fstream *file, void* _ptr, size_t length);
-
-
-void writeBytes(std::stringstream *file, const char* data, size_t length );
-
-void writeNulls(std::stringstream *file , size_t length );
-
-std::string readString(std::stringstream *file, size_t length);
-
-bool readNulls(std::stringstream *file, size_t length);
-
-glm::vec3 readVec3(std::stringstream *file);
-
-float readFloat(std::stringstream *file);
-
-int readInt(std::stringstream *file);
-
-bool readBool(std::stringstream *file);
-
-void readBytes(std::stringstream *file, void* _ptr, size_t length);
-
-void writeToExportFile(std::fstream *file, QList<bezier_t*> &bezList);
-
+void writeToExportFile(fstream *file, QList<BezierData*> &bezList);
 
 #endif // EXPORTFUNCS_H

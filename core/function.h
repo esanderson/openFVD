@@ -19,10 +19,14 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include <QList>
 #include <QVector>
+#include "section.h"
 #include "subfunction.h"
-#include <fstream>
+
+using namespace std;
 
 enum eFunctype
 {
@@ -33,13 +37,12 @@ enum eFunctype
     funcYaw
 };
 
-class section;
-
 class func
 {
 public:
     func(float min, float max, float start, float end, section* _parent, enum eFunctype newtype);
     ~func();
+
     void appendSubFunction(float length, int i = -1);
     void removeSubFunction(int i = -1);
 
@@ -57,11 +60,9 @@ public:
 
     int getSubfuncNumber(subfunc* _sub);
 
-    void saveFunction(std::fstream& file);
-    void loadFunction(std::fstream& file);
-    void legacyLoadFunction(std::fstream& file);
-    void saveFunction(std::stringstream& file);
-    void loadFunction(std::stringstream& file);
+    void saveFunction(iostream& stream);
+    void loadFunction(iostream& stream);
+    void legacyLoadFunction(iostream& stream);
 
     bool unlock(int _id);
     bool lock(int _id);
@@ -74,6 +75,7 @@ public:
     int activeSubfunc;
     const enum eFunctype type;
     section* const secParent;
+    
 private:
     float startValue;
 };

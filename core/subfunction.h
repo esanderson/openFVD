@@ -19,10 +19,12 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fstream>
-#include <QList>
+#include <iostream>
 
-class func;
+#include <QList>
+#include "function.h"
+
+using namespace std;
 
 enum eDegree
 {
@@ -48,6 +50,7 @@ class subfunc
 public:
     subfunc();
     subfunc(float min, float max, float start, float diff, func* getparent = 0);
+    
     void update(float min, float max, float diff);
 
     float getValue(float x);
@@ -63,11 +66,9 @@ public:
     bool isSymmetric();
     float endValue();
 
-    void saveSubFunc(std::fstream& file);
-    void loadSubFunc(std::fstream& file);
-    void legacyLoadSubFunc(std::fstream& file);
-    void saveSubFunc(std::stringstream& file);
-    void loadSubFunc(std::stringstream& file);
+    void saveSubFunc(iostream& stream);
+    void loadSubFunc(iostream& stream);
+    void legacyLoadSubFunc(iostream& stream);
 
     float minArgument;
     float maxArgument;
@@ -85,7 +86,6 @@ public:
 
     enum eDegree degree;
 
-
     func* parent;
     QList<bez_t> pointList;
     QList<float> valueList;
@@ -94,6 +94,5 @@ private:
     float applyTension(float x);
     float applyCenter(float x);
 };
-
 
 #endif // SUBFUNCTION_H

@@ -367,7 +367,7 @@ int track::exportTrack(fstream *file, float mPerNode, int fromIndex, int toIndex
     }
 
     mnode *lastP = anchor, *curP = getPoint(exportPoints[0]);
-    QList<bezier_t*> bezList;
+    QList<BezierData*> bezList;
 
     for(int i = 0; i < exportPoints.size(); ++i)
     {
@@ -683,9 +683,9 @@ int track::exportTrack3(fstream *file, float mPerNode, int fromIndex, int toInde
     }
 
     mnode *lastP = anchor, *curP = getPoint(exportPoints[0]);
-    QList<bezier_t*> bezList;
+    QList<BezierData*> bezList;
 
-    bezList.append(new bezier_t);
+    bezList.append(new BezierData);
     bezList[0]->P1 = glm::vec3(0.f, 0.f, 0.f);
 
     for(int i = 0; i < exportPoints.size(); ++i)
@@ -775,7 +775,7 @@ int track::exportTrack4(fstream *file, float mPerNode, int fromIndex, int toInde
     }
 
     mnode *last = anchor, *current = getPoint(exportPoints[0]), *mid = getPoint(exportPoints[0]/2);
-    QList<bezier_t*> bezList;
+    QList<BezierData*> bezList;
 
     for(int i = 0; i < exportPoints.size(); ++i)
     {

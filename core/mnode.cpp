@@ -16,16 +16,15 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
+
+#include "bezierdata.h"
 #include "mnode.h"
 #include "exportfuncs.h"
-#include <cmath>
 #include "lenassert.h"
-
-using namespace std;
 
 mnode::mnode()
 {
-
 }
 
 mnode::mnode(glm::vec3 getPos, glm::vec3 getDir, float getRoll, float getVel, float getNForce, float getLateral)
@@ -51,7 +50,7 @@ mnode::mnode(glm::vec3 getPos, glm::vec3 getDir, float getRoll, float getVel, fl
     this->smoothNormal = 0.0f;
     this->smoothLateral = 0.0f;
 
-    if(this->vDir.y == 1)
+    if (this->vDir.y == 1)
     {
         this->vLat = glm::vec3(glm::angleAxis(TO_RAD(getRoll), glm::vec3(0.f, -1.f, 0.f))*glm::vec4(1.f, 0.f, 0.f, 0.f));
     }
@@ -79,20 +78,20 @@ void mnode::updateRoll()
     return;
 }
 
-void mnode::saveNode(fstream& file)
+void mnode::saveNode(iostream& stream)
 {
     /*writeBytes(&file, (const char*)&vPos, sizeof(glm::vec3));
     writeBytes(&file, (const char*)&vDir, sizeof(glm::vec3));*/
-    writeBytes(&file, (const char*)&vLat, sizeof(glm::vec3));
-    writeBytes(&file, (const char*)&fVel, sizeof(float));
+    writeBytes(&stream, (const char*)&vLat, sizeof(glm::vec3));
+    writeBytes(&stream, (const char*)&fVel, sizeof(float));
 }
 
-void mnode::legacyLoadNode(fstream& file)
+void mnode::legacyLoadNode(iostream& stream)
 {
-    vPos = readVec3(&file);
-    vDir = readVec3(&file);
-    vLat = readVec3(&file);
-    fVel = readFloat(&file);
+    vPos = readVec3(&stream);
+    vDir = readVec3(&stream);
+    vLat = readVec3(&stream);
+    fVel = readFloat(&stream);
 }
 
 void mnode::changePitch(float dAngle, bool inverted)
@@ -142,11 +141,11 @@ glm::vec3 mnode::vDirHeart(float fHeart)
     return glm::normalize(vDir + vLat*(float)(fRollSpeedPerMeter*F_PI*fHeart/180.f));
 }
 
-void mnode::exportNode(QList<bezier_t*> &bezList, mnode *last, mnode*, mnode* anchor, float fHeart, float fRollThresh)
+void mnode::exportNode(QList<BezierData*> &bezList, mnode *last, mnode*, mnode* anchor, float fHeart, float fRollThresh)
 {
     #define SCALING 3.f
 
-    bezList.append(new bezier_t);
+    bezList.append(new BezierData);
 
     float realDist = this->fTotalLength - last->fTotalLength;
 

@@ -300,70 +300,43 @@ bool subfunc::isSymmetric()
     return false;
 }
 
-void subfunc::saveSubFunc(fstream& file)
+void subfunc::saveSubFunc(iostream& stream)
 {
-    writeBytes(&file, (const char*)&degree, sizeof(enum eDegree));
-    writeBytes(&file, (const char*)&minArgument, sizeof(float));
-    writeBytes(&file, (const char*)&maxArgument, sizeof(float));
-    writeBytes(&file, (const char*)&startValue, sizeof(float));
-    writeBytes(&file, (const char*)&arg1, sizeof(float));
-    writeBytes(&file, (const char*)&symArg, sizeof(float));
-    writeBytes(&file, (const char*)&centerArg, sizeof(float));
-    writeBytes(&file, (const char*)&tensionArg, sizeof(float));
-    writeBytes(&file, (const char*)&locked, sizeof(bool));
+    writeBytes(&stream, (const char*)&degree, sizeof(enum eDegree));
+    writeBytes(&stream, (const char*)&minArgument, sizeof(float));
+    writeBytes(&stream, (const char*)&maxArgument, sizeof(float));
+    writeBytes(&stream, (const char*)&startValue, sizeof(float));
+    writeBytes(&stream, (const char*)&arg1, sizeof(float));
+    writeBytes(&stream, (const char*)&symArg, sizeof(float));
+    writeBytes(&stream, (const char*)&centerArg, sizeof(float));
+    writeBytes(&stream, (const char*)&tensionArg, sizeof(float));
+    writeBytes(&stream, (const char*)&locked, sizeof(bool));
 }
 
-void subfunc::saveSubFunc(stringstream& file)
+void subfunc::loadSubFunc(iostream& stream)
 {
-    writeBytes(&file, (const char*)&degree, sizeof(enum eDegree));
-    writeBytes(&file, (const char*)&minArgument, sizeof(float));
-    writeBytes(&file, (const char*)&maxArgument, sizeof(float));
-    writeBytes(&file, (const char*)&startValue, sizeof(float));
-    writeBytes(&file, (const char*)&arg1, sizeof(float));
-    writeBytes(&file, (const char*)&symArg, sizeof(float));
-    writeBytes(&file, (const char*)&centerArg, sizeof(float));
-    writeBytes(&file, (const char*)&tensionArg, sizeof(float));
-    writeBytes(&file, (const char*)&locked, sizeof(bool));
+    degree = (enum eDegree)readInt(&stream);
+    minArgument = readFloat(&stream);
+    maxArgument = readFloat(&stream);
+    startValue = readFloat(&stream);
+    arg1 = readFloat(&stream);
+    symArg = readFloat(&stream);
+    centerArg = readFloat(&stream);
+    tensionArg = readFloat(&stream);
+    locked = readBool(&stream);
 }
 
-void subfunc::loadSubFunc(fstream& file)
+void subfunc::legacyLoadSubFunc(iostream& stream)
 {
-    degree = (enum eDegree)readInt(&file);
-    minArgument = readFloat(&file);
-    maxArgument = readFloat(&file);
-    startValue = readFloat(&file);
-    arg1 = readFloat(&file);
-    symArg = readFloat(&file);
-    centerArg = readFloat(&file);
-    tensionArg = readFloat(&file);
-    locked = readBool(&file);
-}
-
-void subfunc::legacyLoadSubFunc(fstream& file)
-{
-    degree = (enum eDegree)readInt(&file);
-    minArgument = readFloat(&file);
-    maxArgument = readFloat(&file);
-    startValue = readFloat(&file);
-    arg1 = readFloat(&file);
-    symArg = readFloat(&file);
-    centerArg = readFloat(&file);
-    tensionArg = readFloat(&file);
-    locked = readBool(&file);
-}
-
-void subfunc::loadSubFunc(stringstream& file)
-{
-    degree = (enum eDegree)readInt(&file);
-    minArgument = readFloat(&file);
-    maxArgument = readFloat(&file);
-    parent->changeLength(maxArgument-minArgument, parent->getSubfuncNumber(this));
-    startValue = readFloat(&file);
-    arg1 = readFloat(&file);
-    symArg = readFloat(&file);
-    centerArg = readFloat(&file);
-    tensionArg = readFloat(&file);
-    locked = readBool(&file);
+    degree = (enum eDegree)readInt(&stream);
+    minArgument = readFloat(&stream);
+    maxArgument = readFloat(&stream);
+    startValue = readFloat(&stream);
+    arg1 = readFloat(&stream);
+    symArg = readFloat(&stream);
+    centerArg = readFloat(&stream);
+    tensionArg = readFloat(&stream);
+    locked = readBool(&stream);
 }
 
 float subfunc::applyTension(float x)
