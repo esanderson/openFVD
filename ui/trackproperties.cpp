@@ -103,7 +103,7 @@ void TrackProperties::ontransitionColor_received()
 
 void TrackProperties::on_drawBox_currentIndexChanged(int index)
 {
-    curTrack->trackData->drawHeartline = index;
+    curTrack->trackData->drawMode = index;
 }
 
 void TrackProperties::on_styleBox_currentIndexChanged(int)
@@ -186,13 +186,15 @@ void TrackProperties::on_buttonBox_accepted()
     }
 
 
-    if(curTrack->trackData->style != (enum trackStyle)ui->styleBox->currentIndex()) {
+    if (curTrack->trackData->style != (enum trackStyle)ui->styleBox->currentIndex())
+    {
         curTrack->trackData->style = (enum trackStyle)ui->styleBox->currentIndex();
         curTrack->mMesh->buildMeshes(0);
         curTrack->trackData->hasChanged = true;
     }
 
-    if(curTrack->mMesh->isWireframe != ui->wireframeBox->isChecked()) {
+    if (curTrack->mMesh->isWireframe != ui->wireframeBox->isChecked())
+    {
         curTrack->mMesh->isWireframe = ui->wireframeBox->isChecked();
         curTrack->mMesh->buildMeshes(0);
         curTrack->trackData->hasChanged = true;
@@ -207,7 +209,8 @@ void TrackProperties::on_buttonBox_rejected()
 
 void TrackProperties::openForTrack(trackHandler* _curTrack)
 {
-    if(_curTrack != curTrack) {
+    if (_curTrack != curTrack)
+    {
         curTrack = _curTrack;
 
         ui->frictionBox->setValue(curTrack->trackData->fFriction);
@@ -222,10 +225,10 @@ void TrackProperties::openForTrack(trackHandler* _curTrack)
         palette.setColor(QPalette::ButtonText, curTrack->trackColors[2]);
         ui->transitionColorButton->setPalette(palette);
 
-        ui->drawBox->setCurrentIndex(curTrack->trackData->drawHeartline);
+        ui->drawBox->setCurrentIndex(curTrack->trackData->drawMode);
         ui->styleBox->setCurrentIndex(curTrack->trackData->style);
         ui->wireframeBox->setChecked(curTrack->mMesh->isWireframe);
-
     }
+
     this->show();
 }

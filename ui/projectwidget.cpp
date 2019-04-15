@@ -321,9 +321,9 @@ void projectWidget::on_trackListWidget_itemChanged(QTreeWidgetItem *item, int co
         return;
     case 2:
         if(item->checkState(2) == Qt::Checked) {
-            trackList[index]->trackData->drawTrack = true;
+            trackList[index]->trackData->isDrawn = true;
         } else {
-            trackList[index]->trackData->drawTrack = false;
+            trackList[index]->trackData->isDrawn = false;
         }
         return;
     default:
@@ -439,7 +439,7 @@ QString projectWidget::loadProject(std::fstream& file)
     }
 
     for(int i = 0; i < trackList.size(); ++i) {
-        if(trackList[i]->trackData->drawTrack == false) {
+        if(trackList[i]->trackData->isDrawn == false) {
             trackList[i]->listItem->setCheckState(2, Qt::Unchecked);
         }
     }

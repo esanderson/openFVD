@@ -38,14 +38,16 @@ class smoothUi;
 class smoothHandler;
 class trackHandler;
 
+using namespace std;
+
 enum trackStyle {
-    generic = 0,        // 0,5m
+    generic = 0,    // 0,5m
     genericflat,    // 0,7m
     vekoma,         // 0,6m
     bm,             // 0,6m
     triangle,       // 0,5m
     box,            // 0,5m
-    smallflat,           // 0,5m
+    smallflat,      // 0,5m
     doublespine
 };
 
@@ -53,8 +55,9 @@ class track
 {
 public:
     track();
-    track(trackHandler* _parent ,glm::vec3 startPos, float startYaw, float heartLine = 0.0);
+    track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float heartLine = 0.0);
     ~track();
+
     void removeSection(int index);
     void removeSection(section* fromSection);
 
@@ -65,16 +68,16 @@ public:
     void updateTrack(section* fromSection, int iNode);
     void newSection(enum secType type, int index = -1);
 
-    int exportTrack(std::fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
-    int exportTrack2(std::fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
-    int exportTrack3(std::fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
-    int exportTrack4(std::fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
+    int exportTrack(fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
+    int exportTrack2(fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
+    int exportTrack3(fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
+    int exportTrack4(fstream* file, float mPerNode, int fromIndex, int toIndex, float fRollThresh);
 
     void exportNL2Track(FILE *file, float mPerNode, int fromIndex, int toIndex);
 
-    QString saveTrack(std::fstream& file, trackWidget* _widget);
-    QString loadTrack(std::fstream& file, trackWidget* _widget);
-    QString legacyLoadTrack(std::fstream& file, trackWidget* _widget);
+    QString saveTrack(fstream& file, trackWidget* _widget);
+    QString loadTrack(fstream& file, trackWidget* _widget);
+    QString legacyLoadTrack(fstream& file, trackWidget* _widget);
     
     mnode* getPoint(int index);
     int getIndexFromDist(float dist);
@@ -83,9 +86,42 @@ public:
 
     void getSecNode(int index, int *node, int *section);
 
+    // Initialized to true (not persisted)
+    // Set to true:
+    // * In updateTrack if index is beyond the number of sections
+    // * At the end of updateTrack
+    // * At the end of newSection
+    // * graphWidget#selectionChanged
+    // * smoothUi#applyRollSmooth
+    // * TrackProperites#ondefaultColor_received
+    // * TrackProperties#onsectionColor_received
+    // * TrackProperties#ontransitionColor_received
+    // * TrackProperties#on_buttonBox_accepted when style or isWireFrame changes
+    // * trackWidget#on_sectionListWidget_itemSelectionChanged
+    // * trackWidget#on_ybox_valueChanged
+    // Reset to false in the following after checking hasChanged and calling mMesh#recolorTrack:
+    // * glviewwidget#drawOcclusion
+    // * glviewWidget#paintGL
+    // TODO "needsRecolor"?
     bool hasChanged;
-    bool drawTrack;
-    int drawHeartline;
+
+    // Initialized to true and persisted by this class.
+    // Used in glviewwidget when rendering and set in projectwidget.
+    bool isDrawn;
+
+    // If the track is drawn (isDrawn), draw the track, hearline, or both
+    // Initilized to "Everything" and persisted by this class.
+    // Used in glviewwidget
+    // Set in trackproperties
+    // Taken from trackproperties.ui (drawBox)
+    // 0 = Everything (track and heartline)
+    // 1 = Track only
+    // 2 = Heartline only
+    int drawMode;
+
+    static const int DRAW_MODE_BOTH = 0;
+    static const int DRAW_MODE_TRACK_ONLY = 1;
+    static const int DRAW_MODE_HEARTLINE_ONLY = 2;
 
     mnode* anchorNode;
 

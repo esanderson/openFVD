@@ -247,7 +247,8 @@ void trackWidget::writeNames()
 
 void trackWidget::on_sectionListWidget_itemSelectionChanged()
 {
-    if(!ui->sectionListWidget->selectedItems().size()) {
+    if (!ui->sectionListWidget->selectedItems().size())
+    {
         selSection = NULL;
         inTrack->trackData->activeSection = NULL;
         inTrack->trackData->hasChanged = true;
@@ -263,7 +264,9 @@ void trackWidget::on_sectionListWidget_itemSelectionChanged()
         ui->advancedFrame->hide();
         ui->sectionFrame->hide();
         ui->optionsFrame->hide();
-    } else {
+    }
+    else
+    {
         QTreeWidgetItem* selected = ui->sectionListWidget->selectedItems().at(0);
         int index = getSection(selected);
 

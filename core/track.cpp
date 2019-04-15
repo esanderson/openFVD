@@ -35,7 +35,6 @@ extern glViewWidget* glView;
 
 track::track()
 {
-
 }
 
 track::track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float heartLine)
@@ -51,9 +50,11 @@ track::track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float he
     this->fHeart = heartLine;
     fFriction = 0.03f;
     fResistance = 2e-5;
+
     hasChanged = true;
-    drawTrack = true;
-    drawHeartline = 0;
+    isDrawn = true;
+    drawMode = DRAW_MODE_BOTH;
+
     mOptions = gloParent->mOptions;
     activeSection = NULL;
 
@@ -65,12 +66,12 @@ track::track(trackHandler* _parent, glm::vec3 startPos, float startYaw, float he
 
 track::~track()
 {
-    while(lSections.size() != 0)
+    while (lSections.size() != 0)
     {
         delete lSections.at(0);
         lSections.removeAt(0);
     }
-    while(smoothList.size() != 0)
+    while (smoothList.size() != 0)
     {
         delete smoothList[0];
         smoothList.removeFirst();
@@ -80,12 +81,12 @@ track::~track()
 
 void track::removeSection(int index)
 {
-    if(lSections.size() <= index) return;
+    if (lSections.size() <= index) return;
 
     delete smoothList[index+1];
     smoothList.removeAt(index+1);
 
-    if(index == lSections.size()-1)
+    if (index == lSections.size() - 1)
     {
         delete this->lSections.at(index);
         this->lSections.removeAt(index);
@@ -108,23 +109,27 @@ void track::removeSection(int index)
 
 void track::removeSection(section* fromSection)
 {
+    if (lSections.size() == 0) return;
+
     int i = 0;
-    if(lSections.size() == 0) return;
-    for(; i > lSections.size(); ++i)
+    for (; i > lSections.size(); ++i)
     {
-        if(lSections.at(i) == fromSection) break;
+        if (lSections.at(i) == fromSection) break;
     }
     removeSection(i);
 }
 
 void track::removeSmooth(int fromNode)
 {
-    if(smoothedUntil == fromNode) return;
-    if(fromNode < 0) fromNode = 0;
+    if (smoothedUntil == fromNode) return;
+
+    if (fromNode < 0) fromNode = 0;
+
     smoothedUntil = fromNode;
+
     mnode* prevNode, *curNode = NULL;
     float temp = 0.f;
-    for(int i = 0; i < lSections.size(); ++i)
+    for (int i = 0; i < lSections.size(); ++i)
     {
         section* curSection = lSections[i];
         if(fromNode >= curSection->lNodes.size() && curSection->lNodes.size() > 1)
@@ -196,11 +201,15 @@ void track::applySmooth(int fromNode)
 void track::updateTrack(int index, int iNode)
 {
     //qDebug("called updateTrack(%d, %d)", index, iNode);
-    if(index < 0) index = 0;
-    if(lSections.size() <= index)
+    if (index < 0)
+    {
+        index = 0;
+    }
+
+    if (lSections.size() <= index)
     {
         hasChanged = true;
-        return;   // for savety
+        return;   // for safety
     }
 
     QElapsedTimer timer;
@@ -231,13 +240,13 @@ void track::updateTrack(int index, int iNode)
         }
     }
 
-    if(useSmoothing)
+    if (useSmoothing)
     {
         removeSmooth(nodeAt);
     }
 
     int updateFrom = lSections.at(index)->updateSection(iNode);
-    for(int i = index+1; i < lSections.size(); i++)
+    for (int i = index+1; i < lSections.size(); i++)
     {
 		lSections.at(i)->lNodes.prepend(lSections.at(i-1)->lNodes[lSections.at(i-1)->lNodes.size()-1]);
         lSections.at(i)->updateSection(0);
@@ -992,8 +1001,8 @@ QString track::saveTrack(fstream& file, trackWidget* _widget)
     writeBytes(&file, (const char*)&fFriction, sizeof(float));
     writeBytes(&file, (const char*)&fResistance, sizeof(float));
 
-    writeBytes(&file, (const char*)&drawTrack, sizeof(bool));
-    writeBytes(&file, (const char*)&drawHeartline, sizeof(int));
+    writeBytes(&file, (const char*)&isDrawn, sizeof(bool));
+    writeBytes(&file, (const char*)&drawMode, sizeof(int));
     writeBytes(&file, (const char*)&style, sizeof(int));
     writeBytes(&file, (const char*)&mParent->mMesh->isWireframe, sizeof(bool));
 
@@ -1041,8 +1050,8 @@ QString track::loadTrack(fstream& file, trackWidget* _widget)
     fFriction = readFloat(&file);
     fResistance = readFloat(&file);
 
-    drawTrack = readBool(&file);
-    drawHeartline = readInt(&file);
+    isDrawn = readBool(&file);
+    drawMode = readInt(&file);
     style = (enum trackStyle)readInt(&file);
     mParent->mMesh->isWireframe = readBool(&file);
 
@@ -1159,8 +1168,8 @@ QString track::legacyLoadTrack(fstream& file, trackWidget* _widget)
     fFriction = readFloat(&file);
     fResistance = readFloat(&file);
 
-    drawTrack = readBool(&file);
-    drawHeartline = readInt(&file);
+    isDrawn = readBool(&file);
+    drawMode = readInt(&file);
     style = (enum trackStyle)readInt(&file);
     mParent->mMesh->isWireframe = readBool(&file);
 
